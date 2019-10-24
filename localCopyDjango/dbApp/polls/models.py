@@ -1,11 +1,13 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 # Create your models here.
 class User(models.Model):
     def __str__(self):
         return self.user_name
-    user_name = models.CharField(max_length=50)
+    user_name = models.CharField(max_length=50, primary_key=True, unique=True)
     date_created = models.DateTimeField('date created')
     location = models.CharField(max_length=50)
     favorite_restaurant = models.CharField(max_length=50)
@@ -13,8 +15,9 @@ class User(models.Model):
 class Restaurant(models.Model):
     def __str__(self):
         return self.restaurant_name
-    restaurant_name = models.CharField(max_length=50)
+    restaurant_name = models.CharField(max_length=50, primary_key=True)
     location = models.CharField(max_length=50)
+    # only one primary key in sqlite
     price_tier = models.CharField(max_length=4)
     rating = models.IntegerField(default=0)
     # hours is a separate table
@@ -22,11 +25,12 @@ class Restaurant(models.Model):
 
 class Menu(models.Model):
     def __str__(self):
-        return self.restuarant_name
+        return self.restaurant_name
     restuarant_name = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     food_type = models.CharField(max_length=20)
     dietary_restrictions = models.CharField(max_length=50)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(default=0,
+        validators=[MaxValueValidator(1), MinValueValidator(10)])
 
 class Hours(models.Model):
     def __str__(self):
