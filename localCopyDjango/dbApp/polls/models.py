@@ -12,8 +12,8 @@ class User(models.Model):
 
 class Restaurant(models.Model):
     def __str__(self):
-        return self.restuarant_name
-    restuarant_name = models.CharField(max_length=50)
+        return self.restaurant_name
+    restaurant_name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
     price_tier = models.CharField(max_length=4)
     rating = models.IntegerField(default=0)
