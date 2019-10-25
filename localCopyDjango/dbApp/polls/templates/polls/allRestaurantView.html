@@ -1,0 +1,9 @@
+{% if allRest %}
+    <ul>
+    {% for restaurant in allRest %}
+        <li><a href="/polls/{{ restaurant.id }}/">{{ restaurant.restaurant_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Restaurants are available.</p>
+{% endif %}

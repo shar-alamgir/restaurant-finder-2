@@ -20,5 +20,10 @@ def restaurantView(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
     return render(request, 'polls/restaurantView.html', {'restaurant' : restaurant})
 
+def allRestaurantView(request):
+    allRest = Restaurant.objects.all()
+    context = {'allRest' : allRest}
+    return render(request, 'polls/allRestaurantView.html', context)
+
 def newUser(request):
     pass
