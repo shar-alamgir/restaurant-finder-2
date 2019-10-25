@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+from .models import User
 
 def create_connection(db_file):
     conn = None
@@ -11,9 +12,12 @@ def create_connection(db_file):
     return conn
 
 def insertUser(conn, user_name, date_created, location, favorite_restaurant):
-    sql = ''' INSERT INTO User(user_name, date_created, location, favorite_restaurant)
+    sql = ''' INSERT INTO polls_user(user_name, date_created, location, favorite_restaurant)
               VALUES(?,?,?,?) '''
     cur = conn.cursor()
     task = (user_name, date_created, location, favorite_restaurant)
     cur.execute(sql, task)
-    return cur.lastrowid
+    retValue = cur.lastrowid
+    conn.commit()
+    conn.close()
+    return retValue

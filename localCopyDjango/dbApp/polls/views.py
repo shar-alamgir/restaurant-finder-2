@@ -29,19 +29,17 @@ def allRestaurantView(request):
     context = {'allRest' : allRest}
     return render(request, 'polls/allRestaurantView.html', context)
 
-def userView(request):
-    pdb.set_trace()
+def insertUserView(request):
     if request.method == 'POST':
-        form = cgi.FieldStorage()
         if request.POST.get('user_name'):
             database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
                 return render(request, 'polls/homeView.html')
-            user_name = form.getvalue('user_name')
+            user_name = request.POST.get('user_name')
             date_created = timezone.now()
-            location = user_name = form.getvalue('location')
-            favorite_restaurant = form.getvalue('favorite_restaurant')
+            location = user_name = request.POST.get('location')
+            favorite_restaurant = request.POST.get('favorite_restaurant')
             user_id = helper.insertUser(conn, user_name, date_created, location, favorite_restaurant)
             user = get_object_or_404(User, pk=user_id)
             return render(request, 'polls/userView.html', {'user' : user})
