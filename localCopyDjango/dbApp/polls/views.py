@@ -38,7 +38,7 @@ def insertUserView(request):
                 return render(request, 'polls/homeView.html')
             user_name = request.POST.get('user_name')
             date_created = timezone.now()
-            location = user_name = request.POST.get('location')
+            location = request.POST.get('location')
             favorite_restaurant = request.POST.get('favorite_restaurant')
             user_id = helper.insertUser(conn, user_name, date_created, location, favorite_restaurant)
             user = get_object_or_404(User, pk=user_id)
