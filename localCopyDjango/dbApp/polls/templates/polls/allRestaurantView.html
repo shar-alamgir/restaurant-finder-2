@@ -1,7 +1,7 @@
 {% if allRest %}
     <ul>
     {% for restaurant in allRest %}
-        <li><a href="/polls/{{ restaurant.id }}/">{{ restaurant.restaurant_name }}</a></li>
+        <li><a href="/polls/{{ restaurant.id }}/restaurantView">{{ restaurant.restaurant_name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

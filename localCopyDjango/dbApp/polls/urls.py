@@ -2,6 +2,10 @@ from django.urls import path
 
 from . import views
 
+
+
+#User delete, send to home view in html
+#restaurant delete, send to home view in html
 app_name = ''
 urlpatterns = [
     path('', views.homeView, name='homeView'),
