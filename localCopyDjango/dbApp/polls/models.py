@@ -22,11 +22,10 @@ class Restaurant(models.Model):
     rating = models.IntegerField(default=0)
     # hours is a separate table
     # cuisine tags, reviews is NoSQL
-
 class Menu(models.Model):
     def __str__(self):
         return self.restaurant_name
-    restuarant_name = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restuarant_name = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     food_type = models.CharField(max_length=20)
     dietary_restrictions = models.CharField(max_length=50)
     price = models.IntegerField(default=0,
@@ -35,7 +34,7 @@ class Menu(models.Model):
 class Hours(models.Model):
     def __str__(self):
         return self.restuarant_name
-    restuarant_name = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restuarant_name = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     m_open = models.CharField(max_length=8)
     m_close = models.CharField(max_length=8)
     t_open = models.CharField(max_length=8)
