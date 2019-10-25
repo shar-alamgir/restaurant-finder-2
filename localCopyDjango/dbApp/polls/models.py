@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class User(models.Model):
     def __str__(self):
         return self.user_name
-    user_name = models.CharField(max_length=50, primary_key=True, unique=True)
+    user_name = models.CharField(max_length=50)
     date_created = models.DateTimeField('date created')
     location = models.CharField(max_length=50)
     favorite_restaurant = models.CharField(max_length=50)
@@ -15,7 +15,7 @@ class User(models.Model):
 class Restaurant(models.Model):
     def __str__(self):
         return self.restaurant_name
-    restaurant_name = models.CharField(max_length=50, primary_key=True)
+    restaurant_name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
     # only one primary key in sqlite
     price_tier = models.CharField(max_length=4)
