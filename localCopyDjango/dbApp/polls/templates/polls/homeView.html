@@ -23,7 +23,8 @@
       <a href = "allRestaurantView/" class = "button">Restaurants</a>
       <a href = "#" class = "button">Search</a>
       <h3> CREATE A NEW USER!! </h3>
-      <form action ="" method = "POST">
+      <form action ="/cgi-bin/views.py" method = "POST">
+        {% csrf_token %}
         Enter your User Name Below <br>
         <input type = "text" name="user_name"><br>
         Where do you live (City)? <br>

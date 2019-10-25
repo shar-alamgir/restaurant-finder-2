@@ -13,5 +13,5 @@ urlpatterns = [
     path('allUsersView/', views.allUsersView, name='allUsersView'),
     path('allRestaurantView/', views.allRestaurantView, name='allRestaurantView'),
     path('<int:restaurant_id>/restaurantView', views.restaurantView, name='restaurantView'),
-    path('newUser', views.newUser, name='newUser'),
+    path('<int:user_id>/', views.userView, name='userView'),
 ]
