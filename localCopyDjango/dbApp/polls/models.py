@@ -33,8 +33,8 @@ class Menu(models.Model):
 
 class Hours(models.Model):
     def __str__(self):
-        return self.restuarant_name
-    restuarant_name = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
+        return self.restaurant_name
+    restaurant_name = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     m_open = models.CharField(max_length=8)
     m_close = models.CharField(max_length=8)
     t_open = models.CharField(max_length=8)

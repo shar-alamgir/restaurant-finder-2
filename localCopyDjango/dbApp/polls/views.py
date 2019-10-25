@@ -4,8 +4,8 @@ from django.template import loader
 from django.shortcuts import render, get_object_or_404
 from .models import User, Restaurant, Menu, Hours
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+def homeView(request):
+    return render(request, 'polls/homeView.html')
 
 def userView(request, user_id):
     user = get_object_or_404(User, pk=user_id)

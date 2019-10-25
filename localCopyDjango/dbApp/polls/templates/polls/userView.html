@@ -1,4 +1,18 @@
-<h1>{{ user.user_name }}</h1>
+<link rel = "stylesheet" type ="text/css" href = "userView.css">
+<style>
+  .button {
+    background-color: #010101;
+    border : none;
+    color : white;
+    text-align : center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px 10px;
+  }
+</style>
+<h1>{{ user.user_name }}
+    <a href = "" class = "button">Delete</a>
+</h1>
 <ul>
     <li>{{ user.date_created }}</li>
     <li>{{ user.location }}</li>
