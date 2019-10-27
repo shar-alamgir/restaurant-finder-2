@@ -22,12 +22,10 @@ def insertUser(conn, user_name, date_created, location, favorite_restaurant):
     conn.close()
     return retValue
 
-def deleteUser(conn, user_name):
-    sql = ''' DELETE FROM polls_user WHERE id IN SELECT id FROM polls_user WHERE '''
+def deleteUser(conn, user_id):
+    sql = ''' DELETE FROM polls_user WHERE id = ? '''
     cur = conn.cursor()
-    task = (user_name, date_created, location, favorite_restaurant)
-    cur.execute(sql, task)
-    retValue = cur.lastrowid
+    cur.execute(sql, (user_id,))
     conn.commit()
     conn.close()
-    return retValue
+    return 0

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
@@ -12,11 +12,18 @@ def homeView(request):
     return render(request, 'polls/homeView.html')
 
 def userView(request, user_id):
+    if request.method == 'POST':
+        database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+        conn = helper.create_connection(database)
+        if conn is None:
+            return 0
+        helper.deleteUser(conn, user_id)
+        return redirect('allUsersView')
     user = get_object_or_404(User, pk=user_id)
     return render(request, 'polls/userView.html', {'user' : user})
 
 def allUsersView(request):
-    pdb.set_trace()
+    # pdb.set_trace()
     # when clicking on users button, method is GET
     allUsers = User.objects.all()
     context = {'allUsers' : allUsers}
@@ -34,15 +41,15 @@ def allRestaurantView(request):
 def insertUserView(request):
     if request.method == 'POST':
         if request.POST.get('user_name'):
-            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+            database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
-                return render(request, 'polls/homeView.html')
+                return redirect('homeView')
             user_name = request.POST.get('user_name')
             date_created = timezone.now()
             location = request.POST.get('location')
             favorite_restaurant = request.POST.get('favorite_restaurant')
             user_id = helper.insertUser(conn, user_name, date_created, location, favorite_restaurant)
             user = get_object_or_404(User, pk=user_id)
-            return render(request, 'polls/userView.html', {'user' : user})
-    return render(request, 'polls/homeView.html')
+            return redirect('userView', user_id)
+    return redirect('homeView')

@@ -11,7 +11,7 @@
   }
 </style>
 <h1>{{ user.user_name }}
-    <form action = "http://127.0.0.1:8000/polls/allUsersView/" method = "POST">
+    <form action = "http://127.0.0.1:8000/polls/{{ user.id }}/" method = "POST">
         {% csrf_token %}
       <input type = "submit" name = "delete" value = "Delete User"><br>
     </form>
