@@ -11,7 +11,10 @@
   }
 </style>
 <h1>{{ user.user_name }}
-    <a href = "javascript:history.back()" class = "button">Delete</a>
+    <form action = "http://127.0.0.1:8000/polls/allUsersView/" method = "POST">
+        {% csrf_token %}
+      <input type = "submit" name = "delete" value = "Delete User"><br>
+    </form>
 </h1>
 <ul>
     <li>{{ user.date_created }}</li>
