@@ -16,6 +16,8 @@ def userView(request, user_id):
     return render(request, 'polls/userView.html', {'user' : user})
 
 def allUsersView(request):
+    pdb.set_trace()
+    # when clicking on users button, method is GET
     allUsers = User.objects.all()
     context = {'allUsers' : allUsers}
     return render(request, 'polls/allUsersView.html', context)
