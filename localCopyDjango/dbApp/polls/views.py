@@ -11,6 +11,12 @@ import pdb
 def homeView(request):
     return render(request, 'polls/homeView.html')
 
+def searchView(request):
+    return render(request, 'polls/searchView.html')
+
+def searchResultsView(request):
+    return render(request, 'polls/searchResultsView.html')
+
 def userView(request, user_id):
     if request.method == 'POST':
         database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"

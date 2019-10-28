@@ -9,6 +9,8 @@ from . import views
 app_name = ''
 urlpatterns = [
     path('', views.homeView, name='homeView'),
+    path('searchView/', views.searchView, name='searchView'),
+    path('searchResultsView/', views.searchResultsView, name='searchResultsView'),
     path('<int:user_id>/', views.userView, name='userView'),
     path('allUsersView/', views.allUsersView, name='allUsersView'),
     path('allRestaurantView/', views.allRestaurantView, name='allRestaurantView'),

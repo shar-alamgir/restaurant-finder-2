@@ -1,0 +1,29 @@
+<html>
+<head>
+  <style>
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 50px;
+  margin: 4px 10px;
+  cursor: pointer;
+}
+  </style>
+  <title>RESTAURANT SEARCH</title>
+</head>
+  <body>
+    <h1> RESTAURANT SEARCH</h1>
+    <h3> SEARCH FOR A RESTAURANT BY NAME </h3>
+    <form action ="http://127.0.0.1:8000/polls/searchResultsView/" method = "POST">
+      {% csrf_token %}
+      Enter the restaurant name <br>
+      <input type = "text" name="restaurant"><br>
+      <input type = "submit" value="search"><br>
+    </form>
+  </body>
+</html>
