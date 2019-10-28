@@ -48,3 +48,36 @@ def deleteRestaurant(conn, restaurant_id):
     conn.commit()
     conn.close()
     return 0
+
+def searchRestaurant(conn, searchString):
+    sql = ''' SELECT id, restaurant_name
+    FROM polls_restaurant
+    WHERE restaurant_name LIKE %s
+    ORDER BY restaurant_name ASC '''
+    cur = conn.cursor()
+    cur.execute(sql, ("%" + searchString + "%",))
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def updateUser(conn, user_id, user_name, location, favorite_restaurant):
+    sql = ''' UPDATE polls_user
+    SET user_name = ?, location = ?, favorite_restaurant = ?
+    WHERE id = ?'''
+    cur = conn.cursor()
+    task = (user_name, location, favorite_restaurant, user_id)
+    cur.execute(sql, task)
+    conn.commit()
+    conn.close()
+    return user_id
+
+def updateRestaurant(conn, restaurant_id, location, price_tier, rating):
+    sql = ''' UPDATE polls_restaurant
+    SET location = ?, price_tier = ?, rating = ?
+    WHERE id = ?'''
+    cur = conn.cursor()
+    task = (location, price_tier, rating, restaurant_id)
+    cur.execute(sql, task)
+    conn.commit()
+    conn.close()
+    return restaurant_id
