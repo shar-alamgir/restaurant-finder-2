@@ -19,7 +19,7 @@ class Restaurant(models.Model):
     location = models.CharField(max_length=50)
     # only one primary key in sqlite
     price_tier = models.CharField(max_length=4)
-    rating = models.IntegerField(default=0)
+    rating = models.DecimalField(max_digits=2, decimal_places = 1)
     # hours is a separate table
     # cuisine tags, reviews is NoSQL
 class Menu(models.Model):
