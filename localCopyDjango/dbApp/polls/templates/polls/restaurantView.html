@@ -1,6 +1,22 @@
-<h1>{{ restaurant.restaurant_name }}hi</h1>
+<style>
+  .button {
+    background-color: #010101;
+    border : none;
+    color : white;
+    text-align : center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px 10px;
+  }
+</style>
+<h1>{{ restaurant.restaurant_name }}
+    <form action = "http://127.0.0.1:8000/polls/{{ restaurant.id }}/restaurantView" method = "POST">
+        {% csrf_token %}
+      <input type = "submit" name = "delete" value = "Delete Restaurant"><br>
+    </form>
+</h1>
 <ul>
-    <li>{{ restaurant.price_tier }}</li>
     <li>{{ restaurant.location }}</li>
+    <li>{{ restaurant.price_tier }}</li>
     <li>{{ restaurant.rating }}</li>
 </ul>

@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class User(models.Model):
     def __str__(self):
         return self.user_name
-    user_name = models.CharField(max_length=50)
+    user_name = models.CharField(max_length=50, unique=True)
     date_created = models.DateTimeField('date created')
     location = models.CharField(max_length=50)
     favorite_restaurant = models.CharField(max_length=50)

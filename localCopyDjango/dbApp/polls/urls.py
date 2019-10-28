@@ -14,4 +14,5 @@ urlpatterns = [
     path('allRestaurantView/', views.allRestaurantView, name='allRestaurantView'),
     path('<int:restaurant_id>/restaurantView', views.restaurantView, name='restaurantView'),
     path('insertUserView/', views.insertUserView, name='insertUserView'),
+    path('insertRestaurantView/', views.insertRestaurantView, name='insertRestaurantView'),
 ]

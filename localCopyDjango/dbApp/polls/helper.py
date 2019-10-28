@@ -29,3 +29,22 @@ def deleteUser(conn, user_id):
     conn.commit()
     conn.close()
     return 0
+
+def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
+    sql = ''' INSERT INTO polls_restaurant(restaurant_name, location, price_tier, rating)
+              VALUES(?,?,?,?) '''
+    cur = conn.cursor()
+    task = (restaurant_name, location, price_tier, rating)
+    cur.execute(sql, task)
+    retValue = cur.lastrowid
+    conn.commit()
+    conn.close()
+    return retValue
+
+def deleteRestaurant(conn, restaurant_id):
+    sql = ''' DELETE FROM polls_restaurant WHERE id = ? '''
+    cur = conn.cursor()
+    cur.execute(sql, (restaurant_id,))
+    conn.commit()
+    conn.close()
+    return 0

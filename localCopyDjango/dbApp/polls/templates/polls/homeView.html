@@ -33,5 +33,18 @@
         <input type = "text" name="favorite_restaurant"><br>
         <input type = "submit" value="insert"><br>
       </form>
+      <h3> Add a new restaurant into the database! </h3>
+      <form action ="insertRestaurantView/" method = "POST">
+        {% csrf_token %}
+        Enter the Restaurant Name Below <br>
+        <input type = "text" name="restaurant_name"><br>
+        What location is your restaurant in? <br>
+        <input type = "text" name = "location"><br>
+        What is your price tier? ($-$$$$) <br>
+        <input type = "text" name="price_tier"><br>
+        What is your rating? (1-5) <br>
+        <input type = "text" name="rating"><br>
+        <input type = "submit" value="insert"><br>
+      </form>
   </body>
 </html>

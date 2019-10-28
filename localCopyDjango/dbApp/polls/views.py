@@ -13,7 +13,7 @@ def homeView(request):
 
 def userView(request, user_id):
     if request.method == 'POST':
-        database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+        database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
         conn = helper.create_connection(database)
         if conn is None:
             return 0
@@ -30,6 +30,13 @@ def allUsersView(request):
     return render(request, 'polls/allUsersView.html', context)
 
 def restaurantView(request, restaurant_id):
+    if request.method == "POST":
+        database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+        conn = helper.create_connection(database)
+        if conn is None:
+            return 0
+        helper.deleteRestaurant(conn, restaurant_id)
+        return redirect('allRestaurantView')
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
     return render(request, 'polls/restaurantView.html', {'restaurant' : restaurant})
 
@@ -41,7 +48,7 @@ def allRestaurantView(request):
 def insertUserView(request):
     if request.method == 'POST':
         if request.POST.get('user_name'):
-            database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
                 return redirect('homeView')
@@ -52,4 +59,20 @@ def insertUserView(request):
             user_id = helper.insertUser(conn, user_name, date_created, location, favorite_restaurant)
             user = get_object_or_404(User, pk=user_id)
             return redirect('userView', user_id)
+    return redirect('homeView')
+
+def insertRestaurantView(request):
+    if request.method == 'POST':
+        if request.POST.get('restaurant_name'):
+            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+            conn = helper.create_connection(database)
+            if conn is None:
+                return redirect('homeView')
+            restaurant_name = request.POST.get('restaurant_name')
+            location = request.POST.get('location')
+            price_tier = request.POST.get('price_tier')
+            rating = request.POST.get('rating')
+            restaurant_id = helper.insertRestaurant(conn, restaurant_name, location, price_tier, rating)
+            restaurant = get_object_or_404(User, pk=restaurant_id)
+            return redirect('restaurantView', restaurant_id)
     return redirect('homeView')
