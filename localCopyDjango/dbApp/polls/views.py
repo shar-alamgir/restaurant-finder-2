@@ -15,11 +15,23 @@ def searchView(request):
     return render(request, 'polls/searchView.html')
 
 def searchResultsView(request):
-    return render(request, 'polls/searchResultsView.html')
+    if request.method == 'POST':
+        if request.POST.get('restaurant'):
+            database = r"/Users/Marcus Cooney/Desktop/CS411/rf2/localCopyDjango/dbApp/db.sqlite3"
+            conn = helper.create_connection(database)
+            if conn is None:
+                return redirect('searchView')
+            searchString = request.POST.get('restaurant')
+            result = helper.searchRestaurant(conn, searchString)
+            context = {'result' : result}
+            return render(request, 'polls/searchResultsView.html', context)
+        else:
+            return redirect('searchView')
+    return redirect('searchView')
 
 def userView(request, user_id):
     if request.method == 'POST':
-        database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+        database = r"/Users/Marcus Cooney/Desktop/CS411/rf2/localCopyDjango/dbApp/db.sqlite3"
         conn = helper.create_connection(database)
         if conn is None:
             return 0
@@ -37,7 +49,7 @@ def allUsersView(request):
 
 def restaurantView(request, restaurant_id):
     if request.method == "POST":
-        database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+        database = r"/Users/Marcus Cooney/Desktop/CS411/rf2/localCopyDjango/dbApp/db.sqlite3"
         conn = helper.create_connection(database)
         if conn is None:
             return 0
@@ -54,7 +66,7 @@ def allRestaurantView(request):
 def insertUserView(request):
     if request.method == 'POST':
         if request.POST.get('user_name'):
-            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+            database = r"/Users/Marcus Cooney/Desktop/CS411/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
                 return redirect('homeView')
@@ -70,7 +82,7 @@ def insertUserView(request):
 def insertRestaurantView(request):
     if request.method == 'POST':
         if request.POST.get('restaurant_name'):
-            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+            database = r"/Users/Marcus Cooney/Desktop/CS411/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
                 return redirect('homeView')

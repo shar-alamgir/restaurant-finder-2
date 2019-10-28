@@ -1,22 +1,9 @@
-<html>
-<head>
-  <style>
-.button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 50px;
-  margin: 4px 10px;
-  cursor: pointer;
-}
-  </style>
-  <title>RESTAURANT SEARCH</title>
-</head>
-  <body>
-    <h1> RESTAURANT SEARCH</h1>
-  </body>
-</html>
+{% if result %}
+    <ul>
+    {% for row in result %}
+        <li><a href="/polls/{{ row.id }}/restaurantView">{{ row.restaurant_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No restaurants matched that search.</p>
+{% endif %}
