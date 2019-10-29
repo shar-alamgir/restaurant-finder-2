@@ -19,4 +19,14 @@
     <li>{{ user.date_created }}</li>
     <li>{{ user.location }}</li>
     <li>{{ user.favorite_restaurant }}</li>
+    <form action = "http://127.0.0.1:8000/polls/{{ user.id }}/" method = "POST">
+        {% csrf_token %}
+        Change your username: <br>
+        <input type = "text" name="user_name"><br>
+        Change your location:<br>
+        <input type = "text" name = "location"><br>
+        Change your favorite restaurant: <br>
+        <input type = "text" name="favorite_restaurant"><br>
+      <input type = "submit" name = "update" value = "Update your data"><br>
+    </form>
 </ul>
