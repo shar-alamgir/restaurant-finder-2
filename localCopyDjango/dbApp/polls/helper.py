@@ -67,19 +67,29 @@ def updateUser(conn, user_id, user_name, location, favorite_restaurant):
     SET user_name = ?, location = ?, favorite_restaurant = ?
     WHERE id = ?'''
     cur = conn.cursor()
+    pdb.set_trace()
     task = (user_name, location, favorite_restaurant, user_id)
     cur.execute(sql, task)
     conn.commit()
     conn.close()
     return user_id
 
-def updateRestaurant(conn, restaurant_id, location, price_tier, rating):
+def updateRestaurant(conn, restaurant_id, location, price_tier):
     sql = ''' UPDATE polls_restaurant
-    SET location = ?, price_tier = ?, rating = ?
+    SET location = ?, price_tier = ?
     WHERE id = ?'''
     cur = conn.cursor()
-    task = (location, price_tier, rating, restaurant_id)
+    task = (location, price_tier, restaurant_id)
     cur.execute(sql, task)
     conn.commit()
     conn.close()
     return restaurant_id
+
+def getParameter(conn, param, table, id):
+    if table == "polls_user":
+        sql = 'SELECT %s FROM polls_user WHERE id = %d'
+    cur = conn.cursor()
+    cur.execute(sql, [param, id,])
+    rows = cur.fetchall()
+    pdb.set_trace()
+    return rows
