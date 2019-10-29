@@ -1,7 +1,7 @@
 {% if result %}
     <ul>
     {% for row in result %}
-        <li><a href="/polls/{{ row.id }}/restaurantView">{{ row.restaurant_name }}</a></li>
+        <li><a href="/polls/{{ row.0 }}/restaurantView">{{ row.1 }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

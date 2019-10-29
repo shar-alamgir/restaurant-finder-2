@@ -1,6 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 from .models import User
+import pdb
 
 def create_connection(db_file):
     conn = None
@@ -52,10 +53,11 @@ def deleteRestaurant(conn, restaurant_id):
 def searchRestaurant(conn, searchString):
     sql = ''' SELECT id, restaurant_name
     FROM polls_restaurant
-    WHERE restaurant_name LIKE %s
+    WHERE restaurant_name LIKE ?
     ORDER BY restaurant_name ASC '''
     cur = conn.cursor()
-    cur.execute(sql, ("%" + searchString + "%",))
+    args = searchString + '%'
+    cur.execute(sql, (args,))
     rows = cur.fetchall()
     conn.close()
     return rows
