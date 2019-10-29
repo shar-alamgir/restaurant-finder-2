@@ -23,14 +23,6 @@ def insertUser(conn, user_name, date_created, location, favorite_restaurant):
     conn.close()
     return retValue
 
-def deleteUser(conn, user_id):
-    sql = ''' DELETE FROM polls_user WHERE id = ? '''
-    cur = conn.cursor()
-    cur.execute(sql, (user_id,))
-    conn.commit()
-    conn.close()
-    return 0
-
 def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
     sql = ''' INSERT INTO polls_restaurant(restaurant_name, location, price_tier, rating)
               VALUES(?,?,?,?) '''
@@ -42,10 +34,10 @@ def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
     conn.close()
     return retValue
 
-def deleteRestaurant(conn, restaurant_id):
-    sql = ''' DELETE FROM polls_restaurant WHERE id = ? '''
+def deleteEntity(conn, table, id):
+    sql = "DELETE FROM %s WHERE id = %d" % (table, id)
     cur = conn.cursor()
-    cur.execute(sql, (restaurant_id,))
+    cur.execute(sql)
     conn.commit()
     conn.close()
     return 0
@@ -63,10 +55,8 @@ def searchRestaurant(conn, searchString):
     return rows
 
 def updateUser(conn, user_id, user_name, location, favorite_restaurant):
-
     sql = 'UPDATE polls_user SET user_name = ?, location = ?, favorite_restaurant = ? WHERE id = ?'
     cur = conn.cursor()
-
     cur.execute(sql, (str(user_name), str(location), str(favorite_restaurant), int(user_id)),)
     conn.commit()
     conn.close()
@@ -81,10 +71,27 @@ def updateRestaurant(conn, restaurant_id, restaurant_name, location, price_tier)
     return restaurant_id
 
 def getParameter(conn, param, table, id):
-    if table == "polls_user":
-        sql = 'SELECT %s FROM polls_user WHERE id = %d' %(param, id)
+    sql = 'SELECT %s FROM %s WHERE id = %d' %(param, table, id)
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()[0]
     pdb.set_trace()
     return rows
+
+def notValid(param, paramName):
+    if paramName == 'price_tier':
+        for currChar in param:
+            if currChar != '$':
+                return True
+        return False
+    if paramName == 'rating':
+        count = 0
+        tmp = str(param)
+        for currChar in tmp:
+            if currChar != '.' and (currChar < '0' or currChar > '9'):
+                return True
+            if currChar == '.':
+                count += 1
+        if count > 1:
+            return True
+        return param > 5
