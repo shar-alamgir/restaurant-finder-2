@@ -37,16 +37,16 @@ def userView(request, user_id):
         if conn is None:
             return 0
         if request.POST.get('update'):
-            if request.POST.get('user_name'):
+            if request.POST.get('user_name') != '':
                 user_name = request.POST.get('user_name')
             else :
                 user_name = helper.getParameter(conn, 'user_name', 'polls_user', user_id)[0]
-                
-            if request.POST.get('location'):
+
+            if request.POST.get('location') != '':
                 location = request.POST.get('location')
             else :
                 location = helper.getParameter(conn, 'location', 'polls_user', user_id)[0]
-            if request.POST.get('favorite_restaurant'):
+            if request.POST.get('favorite_restaurant') != '':
                 favorite_restaurant = request.POST.get('favorite_restaurant')
             else :
                 favorite_restaurant = helper.getParameter(conn, 'favorite_restaurant', 'polls_user', user_id)[0]
