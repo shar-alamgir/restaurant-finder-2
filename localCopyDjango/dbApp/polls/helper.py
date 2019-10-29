@@ -72,13 +72,10 @@ def updateUser(conn, user_id, user_name, location, favorite_restaurant):
     conn.close()
     return user_id
 
-def updateRestaurant(conn, restaurant_id, location, price_tier):
-    sql = ''' UPDATE polls_restaurant
-    SET location = ?, price_tier = ?
-    WHERE id = ?'''
+def updateRestaurant(conn, restaurant_id, restaurant_name, location, price_tier):
+    sql = 'UPDATE polls_restaurant SET restaurant_name = ?, location = ?, price_tier = ? WHERE id = ?'
     cur = conn.cursor()
-    task = (location, price_tier, restaurant_id)
-    cur.execute(sql, task)
+    cur.execute(sql, (str(restaurant_name), str(location), str(price_tier), int(restaurant_id)),)
     conn.commit()
     conn.close()
     return restaurant_id
