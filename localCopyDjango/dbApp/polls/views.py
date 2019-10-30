@@ -82,7 +82,7 @@ def restaurantView(request, restaurant_id):
             if request.POST.get('price_tier') != '':
                 price_tier = request.POST.get('price_tier')
             else :
-                price_tier = helper.getParameter(conn, 'price_tier', 'polls_user', restaurant_id)[0]
+                price_tier = helper.getParameter(conn, 'price_tier', 'polls_restaurant', restaurant_id)[0]
             helper.updateRestaurant(conn, restaurant_id, restaurant_name, location, price_tier)
             restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
             return redirect('restaurantView', restaurant_id)

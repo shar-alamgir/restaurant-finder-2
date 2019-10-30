@@ -75,7 +75,6 @@ def getParameter(conn, param, table, id):
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()[0]
-    pdb.set_trace()
     return rows
 
 def notValid(param, paramName):

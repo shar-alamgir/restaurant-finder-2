@@ -1,15 +1,19 @@
 <style>
   .button {
-    background-color: #010101;
-    border : none;
-    color : white;
-    text-align : center;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 90px 32px;
+    text-align: center;
+    text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    margin: 5px 10px;
+    font-size: 25px;
+    margin: 4px 10px;
+    cursor: pointer;
   }
 </style>
 <h1>{{ restaurant.restaurant_name }}
+  <a href = "http://127.0.0.1:8000/polls/" class = "button">Home</a>
     <form action = "http://127.0.0.1:8000/polls/{{ restaurant.id }}/restaurantView" method = "POST">
         {% csrf_token %}
       <input type = "submit" name = "delete" value = "Delete Restaurant"><br>
