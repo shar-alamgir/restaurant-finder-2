@@ -93,4 +93,4 @@ def notValid(param, paramName):
                 count += 1
         if count > 1:
             return True
-        return param > 5
+        return float(param) > 5.0

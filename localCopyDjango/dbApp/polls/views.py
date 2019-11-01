@@ -17,7 +17,7 @@ def searchView(request):
 def searchResultsView(request):
     if request.method == 'POST':
         if request.POST.get('restaurant'):
-            database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
                 return redirect('searchView')
@@ -32,7 +32,7 @@ def searchResultsView(request):
 def userView(request, user_id):
 
     if request.method == 'POST':
-        database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+        database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
         conn = helper.create_connection(database)
         if conn is None:
             return 0
@@ -65,7 +65,7 @@ def allUsersView(request):
 
 def restaurantView(request, restaurant_id):
     if request.method == "POST":
-        database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+        database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
         conn = helper.create_connection(database)
         if conn is None:
             return 0
@@ -99,7 +99,7 @@ def allRestaurantView(request):
 def insertUserView(request):
     if request.method == 'POST':
         if request.POST.get('user_name'):
-            database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
                 return redirect('homeView')
@@ -115,7 +115,7 @@ def insertUserView(request):
 def insertRestaurantView(request):
     if request.method == 'POST':
         if request.POST.get('restaurant_name'):
-            database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+            database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
             conn = helper.create_connection(database)
             if conn is None:
                 return redirect('homeView')
