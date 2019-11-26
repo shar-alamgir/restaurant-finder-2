@@ -3,7 +3,7 @@
     background-color: #4CAF50;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 90px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -12,11 +12,11 @@
     cursor: pointer;
   }
 </style>
-<h1>{{ user.user_name }}
+<h1>{{ restaurant.restaurant_name }}
   <a href = "http://127.0.0.1:8000/polls/" class = "button">Home</a>
 </h1>
 <ul>
-    <li>{{ user.date_created }}</li>
-    <li>{{ user.location }}</li>
-    <li>{{ user.favorite_restaurant }}</li>
+    <li>{{ restaurant.location }}</li>
+    <li>{{ restaurant.price_tier }}</li>
+    <li>{{ restaurant.rating }}</li>
 </ul>

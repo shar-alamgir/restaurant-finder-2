@@ -1,0 +1,36 @@
+<style>
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    margin: 4px 10px;
+    cursor: pointer;
+  }
+</style>
+<h1>{{ user.user_name }}
+  <a href = "http://127.0.0.1:8000/polls/" class = "button">Home</a>
+    <form action = "http://127.0.0.1:8000/polls/{{ user.id }}/personalUserView" method = "POST">
+        {% csrf_token %}
+      <input type = "submit" name = "delete" value = "Delete User"><br>
+    </form>
+</h1>
+<ul>
+    <li>{{ user.date_created }}</li>
+    <li>{{ user.location }}</li>
+    <li>{{ user.favorite_restaurant }}</li>
+    <form action = "http://127.0.0.1:8000/polls/{{ user.id }}/personalUserView" method = "POST">
+        {% csrf_token %}
+        Change your username: <br>
+        <input type = "text" name="user_name"><br>
+        Change your location:<br>
+        <input type = "text" name = "location"><br>
+        Change your favorite restaurant: <br>
+        <input type = "text" name="favorite_restaurant"><br>
+      <input type = "submit" name = "update" value = "Update your data"><br>
+    </form>
+</ul>
