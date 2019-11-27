@@ -13,17 +13,61 @@
   margin: 4px 10px;
   cursor: pointer;
 }
+
+div.fixed {
+  position: fixed;
+  top: 60px;
+  left: 600px;
+  width: 300px;
+}
   </style>
   <title>RESTAURANT SEARCH</title>
 </head>
   <body>
     <h1> RESTAURANT SEARCH</h1>
     <h3> SEARCH FOR A RESTAURANT BY NAME </h3>
+    <div class = "fixed"></div>
     <form action ="http://127.0.0.1:8000/polls/searchResultsView/" method = "POST">
       {% csrf_token %}
       Enter the restaurant name <br>
       <input type = "text" name="restaurant"><br>
       <input type = "submit" value="search"><br>
     </form>
+
+    <h2>Not sure what you want to eat? Let us decide based on your Preferences</h2>
+      <form method="POST" action="http://127.0.0.1:8000/polls/searchResultsView/">
+        {% csrf_token %}
+    <fieldset>
+        <legend>Pick Your Cuisine Tags.</legend>
+        <input type="checkbox" name="cuisine" value="Cats">American<br>
+        <input type="checkbox" name="cuisine" value="Dogs">Chinese<br>
+        <input type="checkbox" name="cuisine" value="Birds">Mexican<br>
+        <input type="checkbox" name="cuisine" value="Cats">Fast Food<br>
+        <input type="checkbox" name="cuisine" value="Dogs">Indian<br>
+        <input type="checkbox" name="cuisine" value="Birds">Sandwiches<br>
+        <br>
+        <legend>Pick your price ranges</legend>
+        <input type="checkbox" name="price" value="Single">$<br>
+        <input type="checkbox" name="price" value="Double">$$<br>
+        <input type="checkbox" name="price" value="Triple">$$$<br>
+        <input type="checkbox" name="price" value="Quadruple">$$$$<br>
+        <br>
+        <legend>Pick your minimum rating</legend>
+        <input type="radio" name="rating" value="One">1.0<br>
+        <input type="radio" name="rating" value="Two">2.0<br>
+        <input type="radio" name="rating" value="Three">3.0<br>
+        <input type="radio" name="rating" value="Four">4.0<br>
+        <input type="radio" name="rating" value="Five">5.0<br>
+        <br>
+        <legend>Extra Preferences</legend>
+        <input type="checkbox" name="extra" value="location">Location (Close to you?)<br>
+        <p>If checked above, please enter your location</p>
+        <input type = "text" name="location"><br>
+        <input type="checkbox" name="extra" value="Dine-In">Dine-in?<br>
+        <input type="checkbox" name="extra" value="Carryout">Carryout?<br>
+        <br>
+        <input type="submit" value="search" />
+    </fieldset>
+</form>
   </body>
 </html>
