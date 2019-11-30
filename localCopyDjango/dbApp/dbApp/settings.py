@@ -78,8 +78,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'reviews':{
+        'ENGINE': 'djongo',
+        'NAME': 'User_Reviews',
     }
 }
+
+
+DATABASE_ROUTERS = [r"/Users/Marcus Cooney/Desktop/CS411/rf2/localCopyDjango/dbApp/dbApp/routers.py"]
 
 
 # Password validation

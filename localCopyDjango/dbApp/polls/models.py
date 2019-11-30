@@ -22,6 +22,7 @@ class Restaurant(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places = 1)
     # hours is a separate table
     # cuisine tags, reviews is NoSQL
+
 class Menu(models.Model):
     def __str__(self):
         return self.restaurant_name
@@ -49,3 +50,14 @@ class Hours(models.Model):
     sa_close = models.CharField(max_length=8)
     su_open = models.CharField(max_length=8)
     su_close = models.CharField(max_length=8)
+
+class Reviews(models.Model):
+    def __str__(self):
+        return self.review_title
+    review_title = models.CharField(max_length=30)
+    restaurant_name = models.CharField(max_length=50)
+    user_name = models.CharField(max_length=50, unique=True)
+    date_written = models.DateTimeField('date written')
+    review_text = models.CharField(max_length=250)
+    star_rating = models.DecimalField(max_digits=2, decimal_places=1)
+    db_table = "Review"
