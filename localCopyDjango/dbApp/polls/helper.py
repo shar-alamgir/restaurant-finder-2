@@ -54,6 +54,21 @@ def searchRestaurant(conn, searchString):
     conn.close()
     return rows
 
+#recommendation helper
+def recommendRestaurant(conn, cuisines, price, rating, location, extra):
+    #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tags
+
+
+    # sql = ''' SELECT id, restaurant_name
+    # FROM polls_restaurant
+    # WHERE restaurant_name IN (?) AND price_tier <= ? AND rating >= ? AND location = ?
+    cur = conn.cursor()
+    # args =
+    # cur.execute(sql, (args,))
+    # rows = cur.fetchall()
+    # conn.close()
+    return
+
 def updateUser(conn, user_id, user_name, location, favorite_restaurant):
     sql = 'UPDATE polls_user SET user_name = ?, location = ?, favorite_restaurant = ? WHERE id = ?'
     cur = conn.cursor()

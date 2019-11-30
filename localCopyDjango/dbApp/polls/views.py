@@ -25,7 +25,27 @@ def searchResultsView(request):
             result = helper.searchRestaurant(conn, searchString)
             context = {'result' : result}
             return render(request, 'polls/searchResultsView.html', context)
-        else:
+        else: #restaurant recommendation AF1
+            database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+            conn = helper.create_connection(database)
+            if conn is None:
+                return redirect('searchView')
+            #select all cuisines as one list
+            cuisines = request.POST.getlist('cuisine')
+            price = request.POST.get('price')
+            rating = request.POST.get('rating')
+            #only read the location if they checked the box
+            if request.POST.get('locationCheck'):
+                location = request.POST.get('location')
+            #dine in vs carry out (might be hard to actually do since i couldn't parse that info from yelp)
+            extra = request.POST.get('extra')
+
+            #not sure if i can call this once for the entire cuisine list or if i should iterate through the list
+            result = helper.recommendRestaurant(conn, cuisines, price, rating, location, extra)
+            context = {'result' : result}
+            #return render(request, 'polls/searchResultsView.html', context)
+
+            #return this for now until function works
             return redirect('searchView')
     return redirect('searchView')
 

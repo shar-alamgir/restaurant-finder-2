@@ -35,22 +35,22 @@ div.fixed {
     </form>
 
     <h2>Not sure what you want to eat? Let us decide based on your Preferences</h2>
-      <form method="POST" action="http://127.0.0.1:8000/polls/searchResultsView/">
+      <form method="POST" action ="http://127.0.0.1:8000/polls/searchResultsView/">
         {% csrf_token %}
     <fieldset>
         <legend>Pick Your Cuisine Tags.</legend>
-        <input type="checkbox" name="cuisine" value="Cats">American<br>
-        <input type="checkbox" name="cuisine" value="Dogs">Chinese<br>
-        <input type="checkbox" name="cuisine" value="Birds">Mexican<br>
-        <input type="checkbox" name="cuisine" value="Cats">Fast Food<br>
-        <input type="checkbox" name="cuisine" value="Dogs">Indian<br>
-        <input type="checkbox" name="cuisine" value="Birds">Sandwiches<br>
+        <input type="checkbox" name="cuisine" value="American">American<br>
+        <input type="checkbox" name="cuisine" value="Chinese">Chinese<br>
+        <input type="checkbox" name="cuisine" value="Mexican">Mexican<br>
+        <input type="checkbox" name="cuisine" value="Fast Food">Fast Food<br>
+        <input type="checkbox" name="cuisine" value="Indian">Indian<br>
+        <input type="checkbox" name="cuisine" value="Sandwiches">Sandwiches<br>
         <br>
-        <legend>Pick your price ranges</legend>
-        <input type="checkbox" name="price" value="Single">$<br>
-        <input type="checkbox" name="price" value="Double">$$<br>
-        <input type="checkbox" name="price" value="Triple">$$$<br>
-        <input type="checkbox" name="price" value="Quadruple">$$$$<br>
+        <legend>Pick your maximum price ranges</legend>
+        <input type="radio" name="price" value="Single">$<br>
+        <input type="radio" name="price" value="Double">$$<br>
+        <input type="radio" name="price" value="Triple">$$$<br>
+        <input type="radio" name="price" value="Quadruple">$$$$<br>
         <br>
         <legend>Pick your minimum rating</legend>
         <input type="radio" name="rating" value="One">1.0<br>
@@ -60,11 +60,11 @@ div.fixed {
         <input type="radio" name="rating" value="Five">5.0<br>
         <br>
         <legend>Extra Preferences</legend>
-        <input type="checkbox" name="extra" value="location">Location (Close to you?)<br>
+        <input type="checkbox" name="locationCheck" value="location">Location (Close to you?)<br>
         <p>If checked above, please enter your location</p>
         <input type = "text" name="location"><br>
-        <input type="checkbox" name="extra" value="Dine-In">Dine-in?<br>
-        <input type="checkbox" name="extra" value="Carryout">Carryout?<br>
+        <input type="radio" name="extra" value="Dine-In">Dine-in?<br>
+        <input type="radio" name="extra" value="Carryout">Carryout?<br>
         <br>
         <input type="submit" value="search" />
     </fieldset>
