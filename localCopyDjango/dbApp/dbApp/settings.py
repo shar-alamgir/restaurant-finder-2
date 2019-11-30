@@ -86,7 +86,7 @@ DATABASES = {
 }
 
 
-DATABASE_ROUTERS = [r"/Users/Marcus Cooney/Desktop/CS411/rf2/localCopyDjango/dbApp/dbApp/routers.py"]
+DATABASE_ROUTERS = ['dbApp.routers.RevRouter']
 
 
 # Password validation
