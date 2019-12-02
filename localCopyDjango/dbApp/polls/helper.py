@@ -1,4 +1,5 @@
 import sqlite3
+import googlemaps
 from sqlite3 import Error
 from .models import User
 import pdb
@@ -94,3 +95,16 @@ def notValid(param, paramName):
         if count > 1:
             return True
         return float(param) > 5.0
+
+def getDistance(userAddr, restAddr):
+    gmaps = googlemaps.Client(key='AIzaSyDeOyuHKTRGZr3YzOirYe5Wi1v5IN2ZhE4')
+    restObj = gmaps.geocode(restAddr)
+    userObj = gmaps.geocode(userAddr)
+    restaurantLat = restObj[0]['geometry']['location']['lat']
+    restaurantLng = restObj[0]['geometry']['location']['lng']
+    userLat = userObj[0]['geometry']['location']['lat']
+    userLng = userObj[0]['geometry']['location']['lng']
+    travelDistObj = gmaps.distance_matrix((userLat, userLng), (restaurantLat, restaurantLng))
+    dist = travelDistObj['rows'][0]['elements'][0]['distance']['text']
+    pdb.set_trace()
+    return dist
