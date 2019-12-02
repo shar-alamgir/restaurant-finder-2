@@ -1,0 +1,9 @@
+{% if allReviews %}
+    <ul>
+    {% for review in allReviews %}
+        <li>{{review.review_title}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No reviews are available.</p>
+{% endif %}

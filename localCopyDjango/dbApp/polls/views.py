@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
-from .models import User, Restaurant, Menu, Hours
+from .models import User, Restaurant, Menu, Hours, Reviews
 from django.utils import timezone
 import cgi
 from . import helper
@@ -11,6 +11,14 @@ import pdb
 def homeView(request):
     helper.getDistance('1301 W Springfield Ave, Champaign, IL', '603 S Wright St, Champaign, IL')
     return render(request, 'polls/homeView.html')
+
+def allReviewsView(request):
+    # allUsers = User.objects.all()
+    # context = {'allUsers' : allUsers}
+    # return render(request, 'polls/allUsersView.html', context)
+    allReviews = Reviews.objects.all()
+    context = {'allReviews' : allReviews}
+    return render(request, 'polls/allReviewsView.html', context)
 
 def searchView(request):
     return render(request, 'polls/searchView.html')

@@ -19,5 +19,6 @@ urlpatterns = [
     path('insertUserView/', views.insertUserView, name='insertUserView'),
     path('insertRestaurantView/', views.insertRestaurantView, name='insertRestaurantView'),
     path('<int:restaurant_id>/customerView', views.customerView, name='customerView'),
+    path('allReviewsView/', views.allReviewsView, name='allReviewsView'),
 
 ]

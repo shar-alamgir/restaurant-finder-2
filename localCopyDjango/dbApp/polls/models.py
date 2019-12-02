@@ -57,7 +57,7 @@ class Reviews(noSQLModels.Model):
         return self.review_title
     review_title = noSQLModels.CharField(max_length=30)
     restaurant_name = noSQLModels.CharField(max_length=50)
-    user_name = noSQLModels.CharField(max_length=50, unique=True)
+    user_name = noSQLModels.CharField(max_length=50)
     date_written = noSQLModels.DateTimeField('date written')
     review_text = noSQLModels.CharField(max_length=250)
     star_rating = noSQLModels.DecimalField(max_digits=2, decimal_places=1)
