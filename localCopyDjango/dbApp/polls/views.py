@@ -8,15 +8,12 @@ import cgi
 from . import helper
 import pdb
 
-database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+database = r"\Users\Marcus Cooney\Desktop\CS411\rf2\localCopyDjango\dbApp\db.sqlite3"
 
 def homeView(request):
     return render(request, 'polls/homeView.html')
 
 def allReviewsView(request):
-    # allUsers = User.objects.all()
-    # context = {'allUsers' : allUsers}
-    # return render(request, 'polls/allUsersView.html', context)
     allReviews = Reviews.objects.all()
     context = {'allReviews' : allReviews}
     return render(request, 'polls/allReviewsView.html', context)
