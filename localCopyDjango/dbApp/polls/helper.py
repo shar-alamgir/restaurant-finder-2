@@ -98,7 +98,6 @@ def notValid(param, paramName):
 
 def getDistance(userAddr, restAddr):
     gmaps = googlemaps.Client(key='AIzaSyDeOyuHKTRGZr3YzOirYe5Wi1v5IN2ZhE4')
-    restAddr += ' Illinois'
     restObj = gmaps.geocode(restAddr)
     userObj = gmaps.geocode(userAddr)
     restaurantLat = restObj[0]['geometry']['location']['lat']
@@ -107,7 +106,6 @@ def getDistance(userAddr, restAddr):
     userLng = userObj[0]['geometry']['location']['lng']
     travelDistObj = gmaps.distance_matrix((userLat, userLng), (restaurantLat, restaurantLng))
     dist = travelDistObj['rows'][0]['elements'][0]['distance']['text']
-    #pdb.set_trace()
     spaceIndex = dist.find(' ')
     dist = dist[0:spaceIndex]
     return dist
@@ -143,7 +141,6 @@ def recommendRestaurant(conn, cuisines, price, rating, location, extra):
     rows = cur.fetchall()
 
     dropStatement = 'DROP TABLE IF EXISTS temp'
-    pdb.set_trace()
     if location is None:
         conn.close()
         return rows
@@ -153,7 +150,6 @@ def recommendRestaurant(conn, cuisines, price, rating, location, extra):
         newSql = "CREATE TABLE temp (id INTEGER, restaurant_name VARCHAR(30), location VARCHAR(30), distanceToUser float)"
         cur.execute(newSql)
         conn.commit()
-        pdb.set_trace()
         for currRow in rows:
             currDist = float(getDistance(location, currRow[2]))
             alterSql = 'INSERT INTO temp (id, restaurant_name, location, distanceToUser) VALUES (?, ?, ?, ?)'
@@ -163,12 +159,8 @@ def recommendRestaurant(conn, cuisines, price, rating, location, extra):
     selectRecs = 'SELECT * FROM temp ORDER BY distanceToUser ASC'
     cur.execute(selectRecs)
     recs = cur.fetchall()
-    pdb.set_trace()
 
     cur.execute(dropStatement)
     conn.commit()
     conn.close()
     return recs
-
-def sortRestaurants(userAddr, restLocs):
-    pass
