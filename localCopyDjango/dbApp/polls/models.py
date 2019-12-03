@@ -99,3 +99,5 @@ class Restaurant_Reviews(noSQLModels.Model):
         model_container=Cuisine_Tags,
         model_form_class=CuisineForm,
     )
+    review_count = noSQLModels.IntegerField(default=0)
+    rating_sum = noSQLModels.IntegerField(default=0)

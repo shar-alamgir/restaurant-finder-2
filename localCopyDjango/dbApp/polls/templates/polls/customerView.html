@@ -56,7 +56,7 @@
   <legend>Reviews</legend>
   <ol>
     {% for reviews in restaurant_reviews.review_list%}
-        <li>{{reviews}}</li>
+        <li>{{reviews.review_title}} by: {{reviews.user_name}}. Written on: {{reviews.date_written}}. {{reviews.review_text}}. Rating = {{reviews.star_rating}}</li>
     {% endfor %}
   </ol>
 </fieldset>
