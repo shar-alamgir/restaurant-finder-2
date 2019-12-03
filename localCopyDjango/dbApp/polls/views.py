@@ -7,8 +7,11 @@ from django.utils import timezone
 import cgi
 from . import helper
 import pdb
+import pymongo
+from pymongo import MongoClient
+import pprint
 
-database = r"/Users/shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
+database = r"\Users\Marcus Cooney\Desktop\CS411\rf2\localCopyDjango\dbApp\db.sqlite3"
 
 def homeView(request):
     return render(request, 'polls/homeView.html')
@@ -167,7 +170,15 @@ def customerView (request, restaurant_id):
     #     helper.deleteEntity(conn, 'polls_restaurant', restaurant_id)
     #     return redirect('allRestaurantView')
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
-    restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_reviews_id)
+    restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_id)
+    if request.method == "POST":
+        database = 'User_Reviews'
+        conn = MongoClient('localhost',27017)
+        db = conn['reviews']
+        db.polls_restaurant_reviews.update({'id':restaurant_id},{'$set':{'avg_rating':5.0}})
+        pdb.set_trace()
+        conn.close()
+        return redirect('homeView')
     return render(request, 'polls/customerView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
 
 def allRestaurantView(request):

@@ -35,6 +35,10 @@ def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
     conn.close()
     return retValue
 
+# def insertReview(conn, review, name, title, rating, id):
+#     sql = ''' INSERT INTO polls_restaurant_reviews() '''
+
+
 def deleteEntity(conn, table, id):
     sql = "DELETE FROM %s WHERE id = %d" % (table, id)
     cur = conn.cursor()
