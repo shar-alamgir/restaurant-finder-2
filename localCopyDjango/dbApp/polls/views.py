@@ -2,21 +2,16 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
-from .models import User, Restaurant, Menu, Hours, Reviews
+from .models import User, Restaurant, Menu, Hours, Reviews, Restaurant_Reviews
 from django.utils import timezone
 import cgi
 from . import helper
 import pdb
 
-database = r"\Users\Marcus Cooney\Desktop\CS411\rf2\localCopyDjango\dbApp\db.sqlite3"
+database = r"/Users/shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
 
 def homeView(request):
     return render(request, 'polls/homeView.html')
-
-def allReviewsView(request):
-    allReviews = Reviews.objects.all()
-    context = {'allReviews' : allReviews}
-    return render(request, 'polls/allReviewsView.html', context)
 
 def searchView(request):
 
@@ -172,7 +167,8 @@ def customerView (request, restaurant_id):
     #     helper.deleteEntity(conn, 'polls_restaurant', restaurant_id)
     #     return redirect('allRestaurantView')
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
-    return render(request, 'polls/customerView.html', {'restaurant' : restaurant})
+    restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_reviews_id)
+    return render(request, 'polls/customerView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
 
 def allRestaurantView(request):
     allRest = Restaurant.objects.all()

@@ -11,6 +11,13 @@
     margin: 4px 10px;
     cursor: pointer;
   }
+  div.absolute {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  width: 800px;
+  height: 400px;
+}
 </style>
 <h1>{{ restaurant.restaurant_name }}
   <a href = "http://127.0.0.1:8000/polls/" class = "button">Home</a>
@@ -19,4 +26,37 @@
     <li>{{ restaurant.location }}</li>
     <li>{{ restaurant.price_tier }}</li>
     <li>{{ restaurant.rating }}</li>
+    {% for tags in restaurant_reviews.tag_list %}
+        <li>{{tags}}</li>
+    {% endfor %}
 </ul>
+
+<form action = "http://127.0.0.1:8000/polls/{{ restaurant.id }}/customerView" method = "POST">
+  {% csrf_token %}
+  <fieldset>
+    <legend>Write a Review for this Restaurant</legend>
+    Enter your User Name:
+    <input type = "text" name = "user_name"><br>
+    <br>
+    Review Title:
+    <input type = "text" name = "review_title"><br>
+    <br>
+    Review text:
+    <textarea = name="review_text" rows="10" cols="30"> </textarea><br>
+    <legend>Rate your experience</legend>
+    <input type="radio" name="rating" value="1">1.0<br>
+    <input type="radio" name="rating" value="2">2.0<br>
+    <input type="radio" name="rating" value="3">3.0<br>
+    <input type="radio" name="rating" value="4">4.0<br>
+    <input type="radio" name="rating" value="5">5.0<br>
+    <input type="submit" value="write"/>
+  </fieldset>
+</form>
+<fieldset>
+  <legend>Reviews</legend>
+  <ol>
+    {% for reviews in restaurant_reviews.review_list%}
+        <li>{{reviews}}</li>
+    {% endfor %}
+  </ol>
+</fieldset>
