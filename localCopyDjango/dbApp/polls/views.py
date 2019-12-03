@@ -8,7 +8,7 @@ import cgi
 from . import helper
 import pdb
 
-database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+database = r"/Users/Shar/djangoInstall/rf2/localCopyDjango/dbApp/db.sqlite3"
 
 def homeView(request):
     helper.getDistance('1301 W Springfield Ave, Champaign, IL', '603 S Wright St, Champaign, IL')
