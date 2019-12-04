@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import User, Restaurant, Menu, Hours, Reviews, Restaurant_Reviews
 from django.utils import timezone
 from datetime import date
+import datetime
 import cgi
 from . import helper
 import pdb
@@ -190,9 +191,9 @@ def customerView (request, restaurant_id):
         for ok in current_restaurant:
             count = ok["review_count"]
             sum = ok["rating_sum"]
-        avgRating = sum + rating / (count + 1)
-        collection.update_one({'id':restaurant_id}, {'$push':{'review_list':{"review_title":title, "user_name": name, "date_written":date.today(), "review_text" : text, "avg_rating" : avgRating}}})
-        collection.update_one({'id':restaurant_id}, {"$inc" : {review_count : 1, rating_sum : rating}})
+        avgRating = sum + float(rating) / (count + 1)
+        collection.update_one({'id':restaurant_id}, {'$push':{'review_list':{"review_title":title, "user_name": name, "date_written":datetime.datetime.now(), "review_text" : text, "star_rating" : avgRating}}})
+        collection.update_one({'id':restaurant_id}, {"$inc" : {'review_count' : 1, 'rating_sum' : float(rating)}})
         conn.close()
         return redirect('homeView')
     return render(request, 'polls/customerView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
