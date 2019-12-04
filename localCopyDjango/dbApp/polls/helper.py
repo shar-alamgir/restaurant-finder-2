@@ -125,6 +125,7 @@ def getDistance(userAddr, restAddr):
     return dist
 
 #recommendation helper
+'''
 def recommendRestaurant(conn, cuisines, price, rating, location, extra):
     #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tags
     if cuisines is None:
@@ -187,3 +188,4 @@ def recommendRestaurant(conn, cuisines, price, rating, location, extra):
     conn.commit()
     conn.close()
     return recs
+'''
