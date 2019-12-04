@@ -4,6 +4,15 @@
         <li><a href="/polls/{{ row.0 }}/customerView">{{ row.1 }}</a></li>
     {% endfor %}
     </ul>
+    <p>Sort Results by:</p>
+  <form method="POST" action="http://127.0.0.1:8000/polls/searchResultsView/">
+    {% csrf_token %} 
+    <select name="sort">
+  <option value="rating">Rating</option>
+  <option value="price">Price($ - $$$$)</option>
+  <option value="location">Location</option>
+  <option value="alpha">Alphabetical A-Z</option>
+</select>
 {% else %}
     <p>No restaurants matched that search.</p>
 {% endif %}

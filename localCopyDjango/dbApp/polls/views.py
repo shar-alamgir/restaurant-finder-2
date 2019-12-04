@@ -2,28 +2,34 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
-from .models import User, Restaurant, Menu, Hours, Reviews
+from .models import User, Restaurant, Menu, Hours, Reviews, Restaurant_Reviews
 from django.utils import timezone
+from datetime import date
+import datetime
 import cgi
 from . import helper
 import pdb
+import pymongo
+from pymongo import MongoClient
+import pprint
 
-database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
+database = r"\Users\Shar\djangoInstall\rf2\localCopyDjango\dbApp\db.sqlite3"
 
 def homeView(request):
     return render(request, 'polls/homeView.html')
 
-def allReviewsView(request):
-    # allUsers = User.objects.all()
-    # context = {'allUsers' : allUsers}
-    # return render(request, 'polls/allUsersView.html', context)
-    allReviews = Reviews.objects.all()
-    context = {'allReviews' : allReviews}
-    return render(request, 'polls/allReviewsView.html', context)
-
 def searchView(request):
-
-    return render(request, 'polls/searchView.html')
+    conn = MongoClient('localhost', 27017)
+    db = conn["User_Reviews"]
+    col = db['polls_restaurant_reviews']
+    tags = col.find({}, {"tag_list.tag_name"}).distinct("tag_list.tag_name")
+    real_list = []
+    for i in tags:
+        real_list.append(i)
+    real_list.sort()
+    context = {"tags" : real_list}
+    conn.close()
+    return render(request, 'polls/searchView.html', context)
 
 def searchResultsView(request):
     if request.method == 'POST':
@@ -40,11 +46,10 @@ def searchResultsView(request):
             if conn is None:
                 return redirect('searchView')
             #select all cuisines as one list
-            cuisines = request.POST.getlist('cuisine')
+            cuisines = request.POST.getlist('cuisines')
             price = request.POST.get('price')
             rating = request.POST.get('rating')
             #only read the location if they checked the box
-            pdb.set_trace()
             if request.POST.get('locationCheck'):
                 location = request.POST.get('location')
             else:
@@ -150,33 +155,36 @@ def restaurantView(request, restaurant_id):
     return render(request, 'polls/restaurantView.html', {'restaurant' : restaurant})
 
 def customerView (request, restaurant_id):
-    # if request.method == "POST":
-    #     database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
-    #     conn = helper.create_connection(database)
-    #     if conn is None:
-    #         return 0
-    #     if request.POST.get('update'):
-    #         if request.POST.get('restaurant_name') != '':
-    #             restaurant_name = request.POST.get('restaurant_name')
-    #         else :
-    #             restaurant_name = helper.getParameter(conn, 'restaurant_name', 'polls_restaurant', restaurant_id)[0]
-    #
-    #         if request.POST.get('location') != '':
-    #             location = request.POST.get('location')
-    #         else :
-    #             location = helper.getParameter(conn, 'location', 'polls_restaurant', restaurant_id)[0]
-    #         if request.POST.get('price_tier') != '':
-    #             price_tier = request.POST.get('price_tier')
-    #         else :
-    #             price_tier = helper.getParameter(conn, 'price_tier', 'polls_restaurant', restaurant_id)[0]
-    #         helper.updateRestaurant(conn, restaurant_id, restaurant_name, location, price_tier)
-    #         restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
-    #         return redirect('restaurantView', restaurant_id)
-    #     helper.deleteEntity(conn, 'polls_restaurant', restaurant_id)
-    #     return redirect('allRestaurantView')
+    if request.method == "POST":
+        if request.POST.get('write'):
+            database = 'User_Reviews'
+            name = request.POST.get("user_name")
+            title = request.POST.get("review_title")
+            text = request.POST.get("review_text")
+            rating = request.POST.get("rating")
+            if (name == "" or title == "" or text == "" or rating is None):
+                return redirect('customerView', restaurant_id)
+            try:
+                conn = MongoClient('localhost',27017)
+            except:
+                return 0
+            db = conn[database]
+            collection = db['polls_restaurant_reviews']
+            current_restaurant = collection.find({"id" : restaurant_id})
+            for ok in current_restaurant:
+                count = ok["review_count"]
+                sum = ok["rating_sum"]
+            avgRating = (sum + float(rating)) / (count + 1)
+            collection.update_one({'id':restaurant_id}, {'$push':{'review_list':{"review_title":title, "user_name": name, "date_written":datetime.datetime.now(), "review_text" : text, "star_rating" : float(rating)}}})
+            collection.update_one({'id':restaurant_id}, {"$inc" : {'review_count' : 1, 'rating_sum' : float(rating)}})
+            collection.update_one({'id':restaurant_id}, {"$set" : {'avg_rating' : avgRating}})
+            conn.close()
+            restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
+            restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_id)
+            return render(request, 'polls/customerView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
-    return render(request, 'polls/customerView.html', {'restaurant' : restaurant})
-
+    restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_id)
+    return render(request, 'polls/customerView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
 def allRestaurantView(request):
     allRest = Restaurant.objects.all()
     context = {'allRest' : allRest}
@@ -206,11 +214,12 @@ def insertRestaurantView(request):
             restaurant_name = request.POST.get('restaurant_name')
             location = request.POST.get('location')
             price_tier = request.POST.get('price_tier')
+            tagString = request.POST.get('tags')
             if helper.notValid(price_tier.strip(), 'price_tier'):
                 return redirect('homeView')
             rating = request.POST.get('rating')
             if helper.notValid(rating, 'rating'):
                 return redirect('homeView')
-            restaurant_id = helper.insertRestaurant(conn, restaurant_name, location, price_tier, rating)
+            restaurant_id = helper.insertRestaurant(conn, restaurant_name, location, price_tier, rating, tagString)
             return redirect('restaurantView', restaurant_id)
     return redirect('homeView')

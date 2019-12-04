@@ -1,5 +1,7 @@
 import sqlite3
 import googlemaps
+import pymongo
+from pymongo import MongoClient
 from sqlite3 import Error
 from .models import User
 import pdb
@@ -24,7 +26,7 @@ def insertUser(conn, user_name, date_created, location, favorite_restaurant):
     conn.close()
     return retValue
 
-def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
+def insertRestaurant(conn, restaurant_name, location, price_tier, rating, tagString):
     sql = ''' INSERT INTO polls_restaurant(restaurant_name, location, price_tier, rating)
               VALUES(?,?,?,?) '''
     cur = conn.cursor()
@@ -33,7 +35,19 @@ def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
     retValue = cur.lastrowid
     conn.commit()
     conn.close()
+
+    tagList = tagString.split(' ')
+    conn = MongoClient('localhost',27017)
+    database = 'User_Reviews'
+    db = conn[database]
+    collection = db['polls_restaurant_reviews']
+    collection.insert_one({"restuarant_name":restuarant_name, "location":location, "avg_rating":0, "review_list":[], "tag_list":tagList, "review_count":0, "rating_sum":0})
+    conn.close()
     return retValue
+
+# def insertReview(conn, review, name, title, rating, id):
+#     sql = ''' INSERT INTO polls_restaurant_reviews() '''
+
 
 def deleteEntity(conn, table, id):
     sql = "DELETE FROM %s WHERE id = %d" % (table, id)
@@ -111,22 +125,44 @@ def getDistance(userAddr, restAddr):
     return dist
 
 #recommendation helper
+
 def recommendRestaurant(conn, cuisines, price, rating, location, extra):
-    #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tags
-    sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
     flag = False
+    #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tag
+    if cuisines is None:
+        sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
+    else:
+        client = MongoClient('localhost',27017)
+        database = 'User_Reviews'
+        db = client[database]
+        collection = db['polls_restaurant_reviews']
+        aggList = collection.find({"tag_list.tag_name": {"$in" : cuisines}}, {"id" : 1, "_id": 0})
+        idList = []
+        for id in aggList:
+            idList.append(id["id"])
+
+        idString = "("
+        for id in range (len(idList)):
+            if (id == len(idList) - 1):
+                idString += str(idList[id]) + ")"
+            else :
+                idString += str(idList[id]) + ", "
+        flag = True
+        sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE id IN' + idString
 
     if price is None:
         sql = sql
     else:
-        flag = True
         numDollars = len(price)
         neededUnderscores = numDollars - 1
         underscores = "_" * neededUnderscores
         priceString = "$" + underscores
         newPriceString = "'" + priceString + "'"
-        sql = sql + ' price_tier LIKE ' + newPriceString
-
+        if flag is True:
+            sql = sql + ' AND price_tier LIKE ' + newPriceString
+        else:
+            flag = True
+            sql = sql + ' price_tier LIKE ' + newPriceString
     if rating is None:
         sql = sql
     else:
