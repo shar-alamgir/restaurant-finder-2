@@ -20,9 +20,9 @@
     </form>
 </h1>
 <ul>
-    <li>{{ user.date_created }}</li>
-    <li>{{ user.location }}</li>
-    <li>{{ user.favorite_restaurant }}</li>
+  <li>Date Created: {{ user.date_created }}</li>
+  <li>Your Location: {{ user.location }}</li>
+  <li>Your favorite restaurant: {{ user.favorite_restaurant }}</li>
     <form action = "http://127.0.0.1:8000/polls/{{ user.id }}/personalUserView" method = "POST">
         {% csrf_token %}
         Change your username: <br>

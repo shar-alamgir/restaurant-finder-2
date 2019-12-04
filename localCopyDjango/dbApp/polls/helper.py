@@ -147,7 +147,7 @@ def getDistance(userAddr, restAddr):
 
 #recommendation helper
 
-def recommendRestaurant(conn, cuisines, price, rating, location, extra):
+def recommendRestaurant(conn, cuisines, price, rating, location):
     flag = False
     #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tag
     if (cuisines == []):
