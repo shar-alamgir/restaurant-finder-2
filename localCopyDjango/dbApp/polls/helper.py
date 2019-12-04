@@ -125,32 +125,44 @@ def getDistance(userAddr, restAddr):
     return dist
 
 #recommendation helper
-'''
+
 def recommendRestaurant(conn, cuisines, price, rating, location, extra):
-    #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tags
-    if cuisines is None:
-        sql = sql
-    else:
-        conn = MongoClient('localhost',27017)
-        database = 'User_Reviews'
-        db = conn[database]
-        collection = db['polls_restaurant_reviews']
-        aggList = collection.aggregate([{$unwind: "$tag_list"},{tag: {$in: cuisines}}]) # idk what the field name is after unwinding tag list
-        sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
-    sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
     flag = False
+    #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tag
+    if cuisines is None:
+        sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
+    else:
+        client = MongoClient('localhost',27017)
+        database = 'User_Reviews'
+        db = client[database]
+        collection = db['polls_restaurant_reviews']
+        aggList = collection.find({"tag_list.tag_name": {"$in" : cuisines}}, {"id" : 1, "_id": 0})
+        idList = []
+        for id in aggList:
+            idList.append(id["id"])
+
+        idString = "("
+        for id in range (len(idList)):
+            if (id == len(idList) - 1):
+                idString += str(idList[id]) + ")"
+            else :
+                idString += str(idList[id]) + ", "
+        flag = True
+        sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE id IN' + idString
 
     if price is None:
         sql = sql
     else:
-        flag = True
         numDollars = len(price)
         neededUnderscores = numDollars - 1
         underscores = "_" * neededUnderscores
         priceString = "$" + underscores
         newPriceString = "'" + priceString + "'"
-        sql = sql + ' price_tier LIKE ' + newPriceString
-
+        if flag is True:
+            sql = sql + ' AND price_tier LIKE ' + newPriceString
+        else:
+            flag = True
+            sql = sql + ' price_tier LIKE ' + newPriceString
     if rating is None:
         sql = sql
     else:
@@ -188,4 +200,3 @@ def recommendRestaurant(conn, cuisines, price, rating, location, extra):
     conn.commit()
     conn.close()
     return recs
-'''

@@ -13,14 +13,23 @@ import pymongo
 from pymongo import MongoClient
 import pprint
 
-database = r"\Users\Marcus Cooney\Desktop\CS411\rf2\localCopyDjango\dbApp\db.sqlite3"
+database = r"\Users\Shar\djangoInstall\rf2\localCopyDjango\dbApp\db.sqlite3"
 
 def homeView(request):
     return render(request, 'polls/homeView.html')
 
 def searchView(request):
-
-    return render(request, 'polls/searchView.html')
+    conn = MongoClient('localhost', 27017)
+    db = conn["User_Reviews"]
+    col = db['polls_restaurant_reviews']
+    tags = col.find({}, {"tag_list.tag_name"}).distinct("tag_list.tag_name")
+    real_list = []
+    for i in tags:
+        real_list.append(i)
+    real_list.sort()
+    context = {"tags" : real_list}
+    conn.close()
+    return render(request, 'polls/searchView.html', context)
 
 def searchResultsView(request):
     if request.method == 'POST':
@@ -37,11 +46,10 @@ def searchResultsView(request):
             if conn is None:
                 return redirect('searchView')
             #select all cuisines as one list
-            cuisines = request.POST.getlist('cuisine')
+            cuisines = request.POST.getlist('cuisines')
             price = request.POST.get('price')
             rating = request.POST.get('rating')
             #only read the location if they checked the box
-            pdb.set_trace()
             if request.POST.get('locationCheck'):
                 location = request.POST.get('location')
             else:
