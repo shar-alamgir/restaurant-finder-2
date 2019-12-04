@@ -59,7 +59,7 @@ def searchResultsView(request):
 
             #not sure if i can call this once for the entire cuisine list or if i should iterate through the list
             result = helper.recommendRestaurant(conn, cuisines, price, rating, location, extra)
-            context = {'result' : result}
+            context = {'afresult' : result}
             return render(request, 'polls/searchResultsView.html', context)
 
             #return this for now until function works
@@ -214,7 +214,7 @@ def insertRestaurantView(request):
             restaurant_name = request.POST.get('restaurant_name')
             location = request.POST.get('location')
             price_tier = request.POST.get('price_tier')
-            tagString = request.POST.get('tags')
+            tagString = request.POST.getlist('cuisines')
             if helper.notValid(price_tier.strip(), 'price_tier'):
                 return redirect('homeView')
             rating = request.POST.get('rating')

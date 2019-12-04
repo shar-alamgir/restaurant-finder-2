@@ -3,7 +3,7 @@ import googlemaps
 import pymongo
 from pymongo import MongoClient
 from sqlite3 import Error
-from .models import User
+from .models import User, Restaurant_Reviews, Cuisine_Tags
 import pdb
 
 def create_connection(db_file):
@@ -26,28 +26,39 @@ def insertUser(conn, user_name, date_created, location, favorite_restaurant):
     conn.close()
     return retValue
 
-def insertRestaurant(conn, restaurant_name, location, price_tier, rating, tagString):
+def insertRestaurant(conn, restaurant, loc, price, rate, tagString):
     sql = ''' INSERT INTO polls_restaurant(restaurant_name, location, price_tier, rating)
               VALUES(?,?,?,?) '''
     cur = conn.cursor()
-    task = (restaurant_name, location, price_tier, rating)
+    task = (restaurant, loc, price, rate)
     cur.execute(sql, task)
-    retValue = cur.lastrowid
     conn.commit()
+    retValue = cur.lastrowid
     conn.close()
-
-    tagList = tagString.split(' ')
     conn = MongoClient('localhost',27017)
     database = 'User_Reviews'
     db = conn[database]
     collection = db['polls_restaurant_reviews']
-    collection.insert_one({"restuarant_name":restuarant_name, "location":location, "avg_rating":0, "review_list":[], "tag_list":tagList, "review_count":0, "rating_sum":0})
+    temp_models = []
+    for tag in tagString:
+        c = Cuisine_Tags(tag_name =tag)
+        temp_models.append(c)
+    r = Restaurant_Reviews(restaurant_name =restaurant, location=loc, avg_rating=0, review_list=[], tag_list=temp_models, review_count = 0, rating_sum = 0)
+    r.save()
+    #collection.insert_one({"restaurant_name":restaurant_name, "location":location, "avg_rating":0, "review_list":[], "tag_list":tagString, "review_count":0, "rating_sum":0})
     conn.close()
     return retValue
 
 # def insertReview(conn, review, name, title, rating, id):
 #     sql = ''' INSERT INTO polls_restaurant_reviews() '''
-
+# def idFind(conn, restaurant, loc):
+#     sql = '''SELECT id FROM polls_restaurant WHERE restaurant_name = ? AND location = ?'''
+#     task = (restaurant, loc)
+#     cur = conn.cursor()
+#     cur.execute(sql, task)
+#     id = cur.fetchall()
+#     print(id)
+#     return id
 
 def deleteEntity(conn, table, id):
     sql = "DELETE FROM %s WHERE id = %d" % (table, id)
@@ -55,6 +66,11 @@ def deleteEntity(conn, table, id):
     cur.execute(sql)
     conn.commit()
     conn.close()
+    if (table == 'polls_restaurant'):
+        client = MongoClient('localhost', 27017)
+        db = client["User_Reviews"]
+        col = db['polls_restaurant_reviews']
+        col.delete_one({"id" : id})
     return 0
 
 def searchRestaurant(conn, searchString):
@@ -82,6 +98,11 @@ def updateRestaurant(conn, restaurant_id, restaurant_name, location, price_tier)
     cur = conn.cursor()
     cur.execute(sql, (str(restaurant_name), str(location), str(price_tier), int(restaurant_id)),)
     conn.commit()
+    conn.close()
+    conn = MongoClient('localhost', 27017)
+    db = conn["User_Reviews"]
+    col = db['polls_restaurant_reviews']
+    col.update_one({"id":restaurant_id}, {"$set": {"restaurant_name" : restaurant_name, "location" : location}})
     conn.close()
     return restaurant_id
 
@@ -129,7 +150,7 @@ def getDistance(userAddr, restAddr):
 def recommendRestaurant(conn, cuisines, price, rating, location, extra):
     flag = False
     #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tag
-    if cuisines is None:
+    if (cuisines == []):
         sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
     else:
         client = MongoClient('localhost',27017)
@@ -157,12 +178,12 @@ def recommendRestaurant(conn, cuisines, price, rating, location, extra):
         neededUnderscores = numDollars - 1
         underscores = "_" * neededUnderscores
         priceString = "$" + underscores
-        newPriceString = "'" + priceString + "'"
+        newPriceString = "'" + priceString + "$%'"
         if flag is True:
-            sql = sql + ' AND price_tier LIKE ' + newPriceString
+            sql = sql + ' AND price_tier NOT LIKE ' + newPriceString
         else:
             flag = True
-            sql = sql + ' price_tier LIKE ' + newPriceString
+            sql = sql + ' price_tier NOT LIKE ' + newPriceString
     if rating is None:
         sql = sql
     else:
