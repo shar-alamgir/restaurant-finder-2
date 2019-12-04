@@ -147,57 +147,36 @@ def restaurantView(request, restaurant_id):
     return render(request, 'polls/restaurantView.html', {'restaurant' : restaurant})
 
 def customerView (request, restaurant_id):
-    # if request.method == "POST":
-    #     database = r"/Users/vincentnguyen/rf2/localCopyDjango/dbApp/db.sqlite3"
-    #     conn = helper.create_connection(database)
-    #     if conn is None:
-    #         return 0
-    #     if request.POST.get('update'):
-    #         if request.POST.get('restaurant_name') != '':
-    #             restaurant_name = request.POST.get('restaurant_name')
-    #         else :
-    #             restaurant_name = helper.getParameter(conn, 'restaurant_name', 'polls_restaurant', restaurant_id)[0]
-    #
-    #         if request.POST.get('location') != '':
-    #             location = request.POST.get('location')
-    #         else :
-    #             location = helper.getParameter(conn, 'location', 'polls_restaurant', restaurant_id)[0]
-    #         if request.POST.get('price_tier') != '':
-    #             price_tier = request.POST.get('price_tier')
-    #         else :
-    #             price_tier = helper.getParameter(conn, 'price_tier', 'polls_restaurant', restaurant_id)[0]
-    #         helper.updateRestaurant(conn, restaurant_id, restaurant_name, location, price_tier)
-    #         restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
-    #         return redirect('restaurantView', restaurant_id)
-    #     helper.deleteEntity(conn, 'polls_restaurant', restaurant_id)
-    #     return redirect('allRestaurantView')
+    if request.method == "POST":
+        if request.POST.get('write'):
+            database = 'User_Reviews'
+            name = request.POST.get("user_name")
+            title = request.POST.get("review_title")
+            text = request.POST.get("review_text")
+            rating = request.POST.get("rating")
+            if (name == "" or title == "" or text == "" or rating is None):
+                return redirect('customerView', restaurant_id)
+            try:
+                conn = MongoClient('localhost',27017)
+            except:
+                return 0
+            db = conn[database]
+            collection = db['polls_restaurant_reviews']
+            current_restaurant = collection.find({"id" : restaurant_id})
+            for ok in current_restaurant:
+                count = ok["review_count"]
+                sum = ok["rating_sum"]
+            avgRating = (sum + float(rating)) / (count + 1)
+            collection.update_one({'id':restaurant_id}, {'$push':{'review_list':{"review_title":title, "user_name": name, "date_written":datetime.datetime.now(), "review_text" : text, "star_rating" : float(rating)}}})
+            collection.update_one({'id':restaurant_id}, {"$inc" : {'review_count' : 1, 'rating_sum' : float(rating)}})
+            collection.update_one({'id':restaurant_id}, {"$set" : {'avg_rating' : avgRating}})
+            conn.close()
+            restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
+            restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_id)
+            return render(request, 'polls/customerView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
     restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_id)
-    if request.method == "POST":
-        database = 'User_Reviews'
-        name = request.POST.get("user_name")
-        title = request.POST.get("review_title")
-        text = request.POST.get("review_text")
-        rating = request.POST.get("rating")
-        if (name == "" or title == "" or text == "" or rating is None):
-            return redirect('customerView', restaurant_id)
-        try:
-            conn = MongoClient('localhost',27017)
-        except:
-            return 0
-        db = conn[database]
-        collection = db['polls_restaurant_reviews']
-        current_restaurant = collection.find({"id" : restaurant_id})
-        for ok in current_restaurant:
-            count = ok["review_count"]
-            sum = ok["rating_sum"]
-        avgRating = sum + float(rating) / (count + 1)
-        collection.update_one({'id':restaurant_id}, {'$push':{'review_list':{"review_title":title, "user_name": name, "date_written":datetime.datetime.now(), "review_text" : text, "star_rating" : avgRating}}})
-        collection.update_one({'id':restaurant_id}, {"$inc" : {'review_count' : 1, 'rating_sum' : float(rating)}})
-        conn.close()
-        return redirect('homeView')
     return render(request, 'polls/customerView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
-
 def allRestaurantView(request):
     allRest = Restaurant.objects.all()
     context = {'allRest' : allRest}
