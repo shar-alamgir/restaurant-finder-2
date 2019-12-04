@@ -226,11 +226,12 @@ def insertRestaurantView(request):
             restaurant_name = request.POST.get('restaurant_name')
             location = request.POST.get('location')
             price_tier = request.POST.get('price_tier')
+            tagString = request.POST.get('tags')
             if helper.notValid(price_tier.strip(), 'price_tier'):
                 return redirect('homeView')
             rating = request.POST.get('rating')
             if helper.notValid(rating, 'rating'):
                 return redirect('homeView')
-            restaurant_id = helper.insertRestaurant(conn, restaurant_name, location, price_tier, rating)
+            restaurant_id = helper.insertRestaurant(conn, restaurant_name, location, price_tier, rating, tagString)
             return redirect('restaurantView', restaurant_id)
     return redirect('homeView')

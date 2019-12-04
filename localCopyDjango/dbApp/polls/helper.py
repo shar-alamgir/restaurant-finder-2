@@ -1,5 +1,7 @@
 import sqlite3
 import googlemaps
+import pymongo
+from pymongo import MongoClient
 from sqlite3 import Error
 from .models import User
 import pdb
@@ -24,7 +26,7 @@ def insertUser(conn, user_name, date_created, location, favorite_restaurant):
     conn.close()
     return retValue
 
-def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
+def insertRestaurant(conn, restaurant_name, location, price_tier, rating, tagString):
     sql = ''' INSERT INTO polls_restaurant(restaurant_name, location, price_tier, rating)
               VALUES(?,?,?,?) '''
     cur = conn.cursor()
@@ -32,6 +34,14 @@ def insertRestaurant(conn, restaurant_name, location, price_tier, rating):
     cur.execute(sql, task)
     retValue = cur.lastrowid
     conn.commit()
+    conn.close()
+
+    tagList = tagString.split(' ')
+    conn = MongoClient('localhost',27017)
+    database = 'User_Reviews'
+    db = conn[database]
+    collection = db['polls_restaurant_reviews']
+    collection.insert_one({"restuarant_name":restuarant_name, "location":location, "avg_rating":0, "review_list":[], "tag_list":tagList, "review_count":0, "rating_sum":0})
     conn.close()
     return retValue
 
@@ -117,6 +127,15 @@ def getDistance(userAddr, restAddr):
 #recommendation helper
 def recommendRestaurant(conn, cuisines, price, rating, location, extra):
     #perform nosql query to get list of all restaurant_name (s) that have at least one of the cuisine tags
+    if cuisines is None:
+        sql = sql
+    else:
+        conn = MongoClient('localhost',27017)
+        database = 'User_Reviews'
+        db = conn[database]
+        collection = db['polls_restaurant_reviews']
+        aggList = collection.aggregate([{$unwind: "$tag_list"},{tag: {$in: cuisines}}]) # idk what the field name is after unwinding tag list
+        sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
     sql = 'SELECT id, restaurant_name, location FROM polls_restaurant WHERE'
     flag = False
 
