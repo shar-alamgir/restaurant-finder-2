@@ -192,7 +192,7 @@ def recommendRestaurant(conn, cuisines, price, rating, location):
         else:
             flag = True
             sql = sql + ' rating >= ' + rating
-
+        
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
@@ -200,7 +200,7 @@ def recommendRestaurant(conn, cuisines, price, rating, location):
     dropStatement = 'DROP TABLE IF EXISTS temp'
     if location is None:
         conn.close()
-        return rows
+        return rows, False
     else:
         cur.execute(dropStatement)
         conn.commit()
@@ -220,4 +220,4 @@ def recommendRestaurant(conn, cuisines, price, rating, location):
     cur.execute(dropStatement)
     conn.commit()
     conn.close()
-    return recs
+    return recs, True

@@ -56,8 +56,8 @@ def searchResultsView(request):
                 location = None
 
             #not sure if i can call this once for the entire cuisine list or if i should iterate through the list
-            result = helper.recommendRestaurant(conn, cuisines, price, rating, location)
-            context = {'afresult' : result}
+            result, checkedRestaurant = helper.recommendRestaurant(conn, cuisines, price, rating, location)
+            context = {'afresult' : result, "checkedOrNot": checkedRestaurant}
             return render(request, 'polls/searchResultsView.html', context)
 
             #return this for now until function works
