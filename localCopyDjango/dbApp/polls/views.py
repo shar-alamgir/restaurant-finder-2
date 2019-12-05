@@ -54,12 +54,10 @@ def searchResultsView(request):
                 location = request.POST.get('location')
             else:
                 location = None
-            #dine in vs carry out (might be hard to actually do since i couldn't parse that info from yelp)
-            extra = request.POST.get('extra')
 
             #not sure if i can call this once for the entire cuisine list or if i should iterate through the list
-            result = helper.recommendRestaurant(conn, cuisines, price, rating, location, extra)
-            context = {'result' : result}
+            result, checkedRestaurant = helper.recommendRestaurant(conn, cuisines, price, rating, location)
+            context = {'afresult' : result, "checkedOrNot": checkedRestaurant}
             return render(request, 'polls/searchResultsView.html', context)
 
             #return this for now until function works
@@ -148,11 +146,13 @@ def restaurantView(request, restaurant_id):
                 price_tier = helper.getParameter(conn, 'price_tier', 'polls_restaurant', restaurant_id)[0]
             helper.updateRestaurant(conn, restaurant_id, restaurant_name, location, price_tier)
             restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
-            return redirect('restaurantView', restaurant_id)
+            restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_id)
+            return render(request, 'polls/restaurantView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
         helper.deleteEntity(conn, 'polls_restaurant', restaurant_id)
         return redirect('allRestaurantView')
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
-    return render(request, 'polls/restaurantView.html', {'restaurant' : restaurant})
+    restaurant_reviews = get_object_or_404(Restaurant_Reviews, pk=restaurant_id)
+    return render(request, 'polls/restaurantView.html', {'restaurant' : restaurant, "restaurant_reviews" : restaurant_reviews})
 
 def customerView (request, restaurant_id):
     if request.method == "POST":
@@ -214,7 +214,7 @@ def insertRestaurantView(request):
             restaurant_name = request.POST.get('restaurant_name')
             location = request.POST.get('location')
             price_tier = request.POST.get('price_tier')
-            tagString = request.POST.get('tags')
+            tagString = request.POST.getlist('cuisines')
             if helper.notValid(price_tier.strip(), 'price_tier'):
                 return redirect('homeView')
             rating = request.POST.get('rating')

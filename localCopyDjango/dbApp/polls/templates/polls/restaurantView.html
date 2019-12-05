@@ -20,9 +20,23 @@
     </form>
 </h1>
 <ul>
-    <li>{{ restaurant.location }}</li>
-    <li>{{ restaurant.price_tier }}</li>
-    <li>{{ restaurant.rating }}</li>
+    <li>Restaurant Location: {{ restaurant.location }}</li>
+    <li>Restaurant Price: {{ restaurant.price_tier }}</li>
+    <li>Restaurant Yelp Rating: {{ restaurant.rating }}</li>
+    <li>Restaurant Finder 2 User Rating:
+      {% if restaurant_reviews.avg_rating == 0 %}
+        N/A
+      {% else %}
+        {{restaurant_reviews.avg_rating}}
+      {% endif %}
+    </li>
+    <li>Cuisines:
+    {% for tags in restaurant_reviews.tag_list %}
+        {{tags}},
+    {% endfor %}
+    </li>
+
+</ul>
     <form action = "http://127.0.0.1:8000/polls/{{ restaurant.id }}/restaurantView" method = "POST">
       {% csrf_token %}
       Change your restaurant name: <br>
@@ -33,4 +47,3 @@
       <input type = "text" name="price_tier"><br>
       <input type = "submit" name = "update" value = "Update your data"><br>
     </form>
-</ul>

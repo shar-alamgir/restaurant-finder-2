@@ -21,14 +21,24 @@
 </style>
 <h1>{{ restaurant.restaurant_name }}
   <a href = "http://127.0.0.1:8000/polls/" class = "button">Home</a>
+  <a href = "http://127.0.0.1:8000/polls/{{ restaurant.id }}/restaurantView" class = "button">Owner?</a>
 </h1>
 <ul>
-    <li>{{ restaurant.location }}</li>
-    <li>{{ restaurant.price_tier }}</li>
-    <li>{{ restaurant.rating }}</li>
-    {% for tags in restaurant_reviews.tag_list %}
-        <li>{{tags}}</li>
-    {% endfor %}
+  <li>Restaurant Location: {{ restaurant.location }}</li>
+  <li>Restaurant Price: {{ restaurant.price_tier }}</li>
+  <li>Restaurant Yelp Rating: {{ restaurant.rating }}</li>
+  <li>Restaurant Finder 2 User Rating:
+    {% if restaurant_reviews.avg_rating == 0 %}
+      N/A
+    {% else %}
+      {{restaurant_reviews.avg_rating}}
+    {% endif %}
+  </li>
+  <li>Cuisines:
+  {% for tags in restaurant_reviews.tag_list %}
+      {{tags}},
+  {% endfor %}
+  </li>
 </ul>
 
 <form action = "http://127.0.0.1:8000/polls/{{ restaurant.id }}/customerView" method = "POST">

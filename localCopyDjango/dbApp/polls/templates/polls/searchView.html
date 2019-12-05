@@ -24,7 +24,7 @@ div.fixed {
   <title>RESTAURANT SEARCH</title>
 </head>
   <body>
-    <h1> RESTAURANT SEARCH</h1>
+    <h1> RESTAURANT SEARCH   <a href = "http://127.0.0.1:8000/polls/" class = "button">Home</a></h1>
     <h3> SEARCH FOR A RESTAURANT BY NAME </h3>
     <div class = "fixed"></div>
     <form action ="http://127.0.0.1:8000/polls/searchResultsView/" method = "POST">
@@ -39,6 +39,16 @@ div.fixed {
         {% csrf_token %}
     <fieldset>
         <legend>Pick Your Cuisine Tags.</legend>
+        <script language="JavaScript">
+        function toggle(source) {
+          checkboxes = document.getElementsByName('cuisines');
+          for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+          }
+        }
+        </script>
+
+        <input type="checkbox" onClick="toggle(this)" /> Super Restaurant?<br/>
         <input type="checkbox" name="cuisines" value =" Wine & Spirits"> Wine & Spirits
         <input type="checkbox" name="cuisines" value ="American (New)">American (New)
         <input type="checkbox" name="cuisines" value ="American (Traditional)">American (Traditional)

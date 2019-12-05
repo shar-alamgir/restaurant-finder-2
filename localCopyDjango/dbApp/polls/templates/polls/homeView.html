@@ -44,8 +44,115 @@
         <input type = "text" name="price_tier"><br>
         What is your rating? (1-5) <br>
         <input type = "text" name="rating"><br>
-        Insert restaurant tags <br>
-        <input type = "text" name="tags"><br>
+        <fieldset>
+            <legend>Pick Your Cuisine Tags.</legend>
+            <script language="JavaScript">
+            function toggle(source) {
+              checkboxes = document.getElementsByName('cuisines');
+              for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = source.checked;
+              }
+            }
+            </script>
+
+            <input type="checkbox" onClick="toggle(this)" /> Super Restaurant?<br/>
+            <input type="checkbox" name="cuisines" value =" Wine & Spirits"> Wine & Spirits
+            <input type="checkbox" name="cuisines" value ="American (New)">American (New)
+            <input type="checkbox" name="cuisines" value ="American (Traditional)">American (Traditional)
+            <input type="checkbox" name="cuisines" value ="Asian Fusion">Asian Fusion
+            <input type="checkbox" name="cuisines" value ="Bagels">Bagels
+            <input type="checkbox" name="cuisines" value ="Bakeries">Bakeries
+            <input type="checkbox" name="cuisines" value ="Barbeque">Barbeque
+            <input type="checkbox" name="cuisines" value ="Bars">Bars
+            <input type="checkbox" name="cuisines" value ="Beer">Beer
+            <input type="checkbox" name="cuisines" value ="Beer Bar">Beer Bar
+            <input type="checkbox" name="cuisines" value ="Breakfast & Brunch">Breakfast & Brunch
+            <input type="checkbox" name="cuisines" value ="Brewpubs">Brewpubs
+            <input type="checkbox" name="cuisines" value ="Buffets">Buffets
+            <input type="checkbox" name="cuisines" value ="Burgers">Burgers
+            <input type="checkbox" name="cuisines" value ="Cafes">Cafes
+            <input type="checkbox" name="cuisines" value ="Cafeteria">Cafeteria
+            <input type="checkbox" name="cuisines" value ="Cajun/Creole">Cajun/Creole
+            <input type="checkbox" name="cuisines" value ="Caribbean">Caribbean
+            <input type="checkbox" name="cuisines" value ="Casinos">Casinos
+            <input type="checkbox" name="cuisines" value ="Caterers">Caterers
+            <input type="checkbox" name="cuisines" value ="Cheesesteaks">Cheesesteaks
+            <input type="checkbox" name="cuisines" value ="Chicken Shop">Chicken Shop
+            <input type="checkbox" name="cuisines" value ="Chicken Wings">Chicken Wings
+            <input type="checkbox" name="cuisines" value ="Chinese">Chinese
+            <input type="checkbox" name="cuisines" value ="Chocolatiers & Shops">Chocolatiers & Shops
+            <input type="checkbox" name="cuisines" value ="Cocktail Bars">Cocktail Bars
+            <input type="checkbox" name="cuisines" value ="Coffee & Tea">Coffee & Tea
+            <input type="checkbox" name="cuisines" value ="Comfort Food">Comfort Food
+            <input type="checkbox" name="cuisines" value ="Convenience Stores">Convenience Stores
+            <input type="checkbox" name="cuisines" value ="Creperies">Creperies
+            <input type="checkbox" name="cuisines" value ="Delis">Delis
+            <input type="checkbox" name="cuisines" value ="Desserts">Desserts
+            <input type="checkbox" name="cuisines" value ="Diners">Diners
+            <input type="checkbox" name="cuisines" value ="Dive Bars">Dive Bars
+            <input type="checkbox" name="cuisines" value ="Empanadas">Empanadas
+            <input type="checkbox" name="cuisines" value ="Fast Food">Fast Food
+            <input type="checkbox" name="cuisines" value ="Fish & Chips">Fish & Chips
+            <input type="checkbox" name="cuisines" value ="Food Court">Food Court
+            <input type="checkbox" name="cuisines" value ="Food Trucks">Food Trucks
+            <input type="checkbox" name="cuisines" value ="Gas Stations">Gas Stations
+            <input type="checkbox" name="cuisines" value ="Gelato">Gelato
+            <input type="checkbox" name="cuisines" value ="Greek">Greek
+            <input type="checkbox" name="cuisines" value ="Grocery">Grocery
+            <input type="checkbox" name="cuisines" value ="Hawaiian">Hawaiian
+            <input type="checkbox" name="cuisines" value ="Hot Dogs">Hot Dogs
+            <input type="checkbox" name="cuisines" value ="Hot Pot">Hot Pot
+            <input type="checkbox" name="cuisines" value ="Ice Cream & Frozen Yogurt">Ice Cream & Frozen Yogurt
+            <input type="checkbox" name="cuisines" value ="Indian">Indian
+            <input type="checkbox" name="cuisines" value ="International Grocery">International Grocery
+            <input type="checkbox" name="cuisines" value ="Italian">Italian
+            <input type="checkbox" name="cuisines" value ="Japanese">Japanese
+            <input type="checkbox" name="cuisines" value ="Juice Bars & Smoothies">Juice Bars & Smoothies
+            <input type="checkbox" name="cuisines" value ="Karaoke">Karaoke
+            <input type="checkbox" name="cuisines" value ="Korean">Korean
+            <input type="checkbox" name="cuisines" value ="Kosher">Kosher
+            <input type="checkbox" name="cuisines" value ="Laotian">Laotian
+            <input type="checkbox" name="cuisines" value ="Latin American">Latin American
+            <input type="checkbox" name="cuisines" value ="Lounges">Lounges
+            <input type="checkbox" name="cuisines" value ="Meat Shops">Meat Shops
+            <input type="checkbox" name="cuisines" value ="Mediterranean">Mediterranean
+            <input type="checkbox" name="cuisines" value ="Mexican">Mexican
+            <input type="checkbox" name="cuisines" value ="Middle Eastern">Middle Eastern
+            <input type="checkbox" name="cuisines" value ="Modern European">Modern European
+            <input type="checkbox" name="cuisines" value ="New Mexican Cuisine">New Mexican Cuisine
+            <input type="checkbox" name="cuisines" value ="Noodles">Noodles
+            <input type="checkbox" name="cuisines" value ="Organic Stores">Organic Stores
+            <input type="checkbox" name="cuisines" value ="Pan Asian">Pan Asian
+            <input type="checkbox" name="cuisines" value ="Pizza">Pizza
+            <input type="checkbox" name="cuisines" value ="Poke">Poke
+            <input type="checkbox" name="cuisines" value ="Pool Halls">Pool Halls
+            <input type="checkbox" name="cuisines" value ="Pubs">Pubs
+            <input type="checkbox" name="cuisines" value ="Ramen">Ramen
+            <input type="checkbox" name="cuisines" value ="Restaurants">Restaurants
+            <input type="checkbox" name="cuisines" value ="Salad">Salad
+            <input type="checkbox" name="cuisines" value ="Sandwiches">Sandwiches
+            <input type="checkbox" name="cuisines" value ="Seafood">Seafood
+            <input type="checkbox" name="cuisines" value ="Seafood Markets">Seafood Markets
+            <input type="checkbox" name="cuisines" value ="Shanghainese">Shanghainese
+            <input type="checkbox" name="cuisines" value ="Shaved Ice">Shaved Ice
+            <input type="checkbox" name="cuisines" value ="Soup">Soup
+            <input type="checkbox" name="cuisines" value ="Southern">Southern
+            <input type="checkbox" name="cuisines" value ="Sports Bars">Sports Bars
+            <input type="checkbox" name="cuisines" value ="Steakhouses">Steakhouses
+            <input type="checkbox" name="cuisines" value ="Street Vendors">Street Vendors
+            <input type="checkbox" name="cuisines" value ="Sushi Bars">Sushi Bars
+            <input type="checkbox" name="cuisines" value ="Szechuan">Szechuan
+            <input type="checkbox" name="cuisines" value ="Taiwanese">Taiwanese
+            <input type="checkbox" name="cuisines" value ="Tex-Mex">Tex-Mex
+            <input type="checkbox" name="cuisines" value ="Thai">Thai
+            <input type="checkbox" name="cuisines" value ="Vegan">Vegan
+            <input type="checkbox" name="cuisines" value ="Vegetarian">Vegetarian
+            <input type="checkbox" name="cuisines" value ="Venues & Event Spaces">Venues & Event Spaces
+            <input type="checkbox" name="cuisines" value ="Vietnamese">Vietnamese
+            <input type="checkbox" name="cuisines" value ="Wine Bars">Wine Bars
+            <input type="checkbox" name="cuisines" value ="Wraps">Wraps
+            <br>
+          </fieldset>
         <input type = "submit" value="insert"><br>
       </form>
   </body>

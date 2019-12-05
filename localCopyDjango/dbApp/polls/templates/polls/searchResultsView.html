@@ -1,18 +1,43 @@
+<style>
+.button {
+background-color: #4CAF50;
+border: none;
+color: white;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 50px;
+margin: 4px 10px;
+cursor: pointer;
+}
+
+div.fixed {
+position: fixed;
+top: 60px;
+left: 600px;
+width: 300px;
+}
+</style>
+
+<a href = "http://127.0.0.1:8000/polls/" class = "button">Home</a>
+<h1> RESTAURANTS FOUND </h1>
 {% if result %}
     <ul>
     {% for row in result %}
         <li><a href="/polls/{{ row.0 }}/customerView">{{ row.1 }}</a></li>
     {% endfor %}
     </ul>
-    <p>Sort Results by:</p>
-  <form method="POST" action="http://127.0.0.1:8000/polls/searchResultsView/">
-    {% csrf_token %} 
-    <select name="sort">
-  <option value="rating">Rating</option>
-  <option value="price">Price($ - $$$$)</option>
-  <option value="location">Location</option>
-  <option value="alpha">Alphabetical A-Z</option>
-</select>
+{% elif afresult %}
+  <ol>
+  {% for row in afresult %}
+    <li><a href="/polls/{{ row.0 }}/customerView">{{ row.1 }}</a>
+      {% if checkedOrNot %}
+        Distance from you = {{row.3}}
+      {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
 {% else %}
     <p>No restaurants matched that search.</p>
 {% endif %}
